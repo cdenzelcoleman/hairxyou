@@ -1,10 +1,11 @@
 import React from 'react';
 
 const HairstyleSelection = ({ onSelect}) => {
-
+    // Placeholder list of hairstyles;
     const hairstyles = [
         { id: 1, name: 'Afro', mg: '/assets/images/afro.png' },
         { id:2, name: 'Braids', img: '/assets/images/braids.png' },
+        // Add more hairstyles here
     ];
 
     return (
