@@ -107,6 +107,67 @@ header h1 {
     padding: 20px;
 }
 
+/* Activity menu heading */
+.activity-menu h2 {
+    color: #C06C84; /* Matches the theme color */
+    margin-bottom: 20px;
+    font-size: 1.3em;
+}
+
+/* Container for activity buttons - uses flexbox for vertical stacking */
+.activity-buttons {
+    display: flex;
+    flex-direction: column; /* Stack buttons vertically */
+    gap: 12px; /* Space between each button */
+}
+
+/* Individual activity button styling */
+.activity-btn {
+    display: flex;
+    align-items: center; /* Vertically center icon and text */
+    gap: 12px; /* Space between icon and text */
+    padding: 15px;
+    background: white;
+    border: 3px solid #ddd; /* Light gray border */
+    border-radius: 15px; /* Rounded corners */
+    cursor: pointer;
+    transition: all 0.3s ease; /* Smooth animation for all changes */
+    font-family: inherit;
+    font-size: 1em;
+    text-align: left;
+}
+
+/* Activity button hover effect - slides right and highlights */
+.activity-btn:hover {
+    transform: translateX(5px); /* Slide slightly to the right */
+    border-color: #FF6B9D; /* Change border to pink theme color */
+    box-shadow: 0 3px 10px rgba(255, 107, 157, 0.3); /* Add pink shadow */
+}
+
+/* Active state - button for currently selected activity */
+.activity-btn.active {
+    /* Gradient background matching the page theme */
+    background: linear-gradient(135deg, #FF6B9D 0%, #C06C84 100%);
+    color: white; /* White text for contrast */
+    border-color: #FF6B9D;
+    transform: translateX(5px); /* Stay in the "slid" position */
+}
+
+/* Activity icon styling (emoji) */
+.activity-icon {
+    font-size: 1.8em; /* Make icon larger than text */
+}
+
+/* Activity name styling */
+.activity-name {
+    font-weight: bold;
+}
+
+/* Tool panel content - styles for dynamically loaded activity content */
+#toolPanelContent {
+    margin-top: 15px;
+}
+
 /* ====================================
    CENTER: CHARACTER DISPLAY
    ==================================== */
