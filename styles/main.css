@@ -1,0 +1,185 @@
+/* ====================================
+   GLOBAL STYLES
+   ==================================== */
+
+/* Reset default browser styles for consistent appearance */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* Include padding and border in element width/height */
+}
+
+/* Body: Full viewport with gradient background */
+body {
+    /* Fun, rounded font that appeals to target audience */
+    font-family: 'Comic Sans MS', 'Arial Rounded MT Bold', cursive, sans-serif;
+    /* Vibrant gradient background - pink to purple spectrum */
+    background: linear-gradient(135deg, #FF6B9D 0%, #C06C84 50%, #6C5B7B 100%);
+    min-height: 100vh; /* Ensure full viewport height even with little content */
+}
+
+/* ====================================
+   MAIN CONTAINER
+   ==================================== */
+
+/* Game container: Centers content and provides max width */
+.game-container {
+    max-width: 1400px; /* Prevents layout from being too wide on large screens */
+    margin: 0 auto; /* Center horizontally */
+    padding: 20px;
+}
+
+/* ====================================
+   HEADER SECTION
+   ==================================== */
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+    position: relative; /* Required for absolute positioning of save button */
+}
+
+/* Main game title */
+header h1 {
+    color: white;
+    font-size: 3em;
+    /* Text shadow adds depth and readability against gradient background */
+    text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+    margin-bottom: 8px;
+}
+
+/* Tagline below title */
+.tagline {
+    color: white;
+    font-size: 1.2em;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+/* Save Character button - positioned in top right of header */
+.save-character-btn {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%); /* Center vertically relative to header */
+    padding: 12px 24px;
+    /* Eye-catching gold gradient */
+    background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+    color: white;
+    border: none;
+    border-radius: 25px; /* Fully rounded button */
+    font-family: inherit;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    transition: all 0.3s ease; /* Smooth hover animation */
+}
+
+/* Save button hover effect - lifts up slightly */
+.save-character-btn:hover {
+    transform: translateY(-50%) translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+}
+
+/* ====================================
+   MAIN CONTENT LAYOUT
+   ==================================== */
+
+/* Three-column grid layout: Activity Menu | Character Display | Tool Panel */
+.main-content {
+    display: grid;
+    grid-template-columns: 250px 1fr 300px; /* Fixed sidebars, flexible center */
+    gap: 20px; /* Space between columns */
+    background: white;
+    border-radius: 30px;
+    padding: 30px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3); /* Deep shadow for depth */
+    min-height: 700px; /* Ensure consistent height */
+}
+
+/* ====================================
+   LEFT SIDEBAR: ACTIVITY MENU
+   ==================================== */
+
+.activity-menu {
+    background: #f8f9fa; /* Light gray background */
+    border-radius: 20px;
+    padding: 20px;
+}
+
+/* ====================================
+   CENTER: CHARACTER DISPLAY
+   ==================================== */
+
+.character-display {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Gradient background creates a sky/scene effect */
+    background: linear-gradient(135deg, #FFD89B 0%, #19547B 100%);
+    border-radius: 20px;
+    padding: 20px;
+}
+
+/* SVG character canvas */
+#character {
+    background: white; /* White background so character shows clearly */
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+/* ====================================
+   RIGHT SIDEBAR: TOOL PANEL
+   ==================================== */
+
+.tool-panel {
+    background: #f8f9fa;
+    border-radius: 20px;
+    padding: 20px;
+    overflow-y: auto; /* Scroll if content is too tall */
+    max-height: 700px;
+}
+
+/* Tool panel title */
+.tool-panel h2 {
+    color: #C06C84; /* Matches gradient theme */
+    margin-bottom: 20px;
+    font-size: 1.5em;
+}
+
+/* ====================================
+   RESPONSIVE DESIGN
+   ==================================== */
+
+/* Tablet and smaller: Stack vertically instead of three columns */
+@media (max-width: 1200px) {
+    .main-content {
+        grid-template-columns: 1fr; /* Single column */
+    }
+
+    /* Save button: Move to static position below title */
+    .save-character-btn {
+        position: static;
+        transform: none;
+        margin-top: 15px;
+    }
+
+    .save-character-btn:hover {
+        transform: translateY(-3px);
+    }
+}
+
+/* Mobile: Smaller text and padding */
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 2em;
+    }
+
+    .game-container {
+        padding: 10px;
+    }
+
+    .main-content {
+        padding: 15px;
+    }
+}

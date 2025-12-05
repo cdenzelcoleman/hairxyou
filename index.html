@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HairXYou - Create Your Character</title>
+    <!-- Main stylesheet for all game styling -->
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+    <!-- Main game container - centers everything and provides padding -->
+    <div class="game-container">
+        <!-- Header section with game title and save button -->
+        <header>
+            <h1>✨ HairXYou ✨</h1>
+            <p class="tagline">Express yourself, your way!</p>
+            <!-- Save button - positioned absolutely in header to top right -->
+            <button id="saveBtn" class="save-character-btn">💾 Save My Character</button>
+        </header>
+
+        <!-- Main content area - uses CSS Grid for three-column layout -->
+        <div class="main-content">
+            <!-- Left sidebar: Activity menu buttons will be dynamically loaded here -->
+            <aside class="activity-menu" id="activityMenu">
+                <!-- Activity buttons will be added here by activities.js -->
+            </aside>
+
+            <!-- Center: Character display area with SVG canvas -->
+            <main class="character-display" id="characterDisplay">
+                <!-- SVG element where the character will be rendered -->
+                <!-- 400x600 viewBox provides consistent aspect ratio -->
+                <svg id="character" width="400" height="600" viewBox="0 0 400 600">
+                    <!-- Character SVG will be built here by character-renderer.js -->
+                </svg>
+            </main>
+
+            <!-- Right sidebar: Tool panel for activity-specific controls -->
+            <aside class="tool-panel" id="toolPanel">
+                <h2 id="toolPanelTitle">Choose an Activity</h2>
+                <!-- Content dynamically loaded based on current activity -->
+                <div id="toolPanelContent"></div>
+            </aside>
+        </div>
+    </div>
+
+    <!-- JavaScript files loaded in specific order for dependencies -->
+    <!-- 1. State management - must load first as other modules depend on it -->
+    <script src="js/state.js"></script>
+    <!-- 2. App initialization - must load last to ensure all modules are available -->
+    <script src="js/app.js"></script>
+</body>
+</html>
