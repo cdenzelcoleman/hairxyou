@@ -209,6 +209,92 @@ header h1 {
 }
 
 /* ====================================
+   CHARACTER CREATION STYLES
+   ==================================== */
+
+/* Customization section wrapper - groups related options together */
+.customization-section {
+    margin-bottom: 25px;
+    padding: 15px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1); /* Subtle depth */
+}
+
+/* Section headings (e.g., "Skin Tone", "Hair Texture") */
+.customization-section h3 {
+    color: #6C5B7B; /* Purple shade from theme */
+    margin-bottom: 15px;
+    font-size: 1.1em;
+}
+
+/* Color grid layout - used for skin tones and hair colors */
+/* 4 columns creates a nice square-ish grid with 8 items */
+.color-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 equal columns */
+    gap: 10px; /* Space between color buttons */
+}
+
+/* Individual color button - circular color swatch */
+.color-btn {
+    width: 100%; /* Fill grid cell */
+    aspect-ratio: 1; /* Keep buttons perfectly square (then border-radius makes circles) */
+    border: 3px solid white; /* White border for unselected state */
+    border-radius: 50%; /* Make it a circle */
+    cursor: pointer;
+    transition: all 0.3s ease; /* Smooth hover and selection animation */
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2); /* Subtle shadow adds depth */
+}
+
+/* Color button hover effect - grows slightly larger */
+.color-btn:hover {
+    transform: scale(1.1); /* Grow by 10% */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3); /* Deeper shadow on hover */
+}
+
+/* Active color button - shows current selection */
+.color-btn.active {
+    border-color: #FF6B9D; /* Pink border indicates selection */
+    border-width: 4px; /* Thicker border stands out more */
+    transform: scale(1.15); /* Slightly larger than hover state */
+}
+
+/* Option grid layout - used for text-based options like hair texture */
+/* 2 columns for longer text labels */
+.option-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 equal columns */
+    gap: 10px;
+}
+
+/* Text-based option button (e.g., "Type 4C", "Type 3B") */
+.option-btn {
+    padding: 12px;
+    background: white;
+    border: 2px solid #ddd; /* Light gray border */
+    border-radius: 10px; /* Rounded corners */
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.9em;
+    font-weight: bold;
+    transition: all 0.3s ease; /* Smooth animation */
+}
+
+/* Option button hover effect */
+.option-btn:hover {
+    background: #f0f0f0; /* Slight gray background */
+    border-color: #FF6B9D; /* Pink border on hover */
+}
+
+/* Active option button - shows current selection */
+.option-btn.active {
+    background: #FF6B9D; /* Full pink background */
+    color: white; /* White text for contrast */
+    border-color: #FF6B9D;
+}
+
+/* ====================================
    RESPONSIVE DESIGN
    ==================================== */
 
