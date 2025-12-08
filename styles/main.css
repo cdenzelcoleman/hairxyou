@@ -576,3 +576,45 @@ header h1 {
 .outfit-btn span {
     font-size: 0.9em; /* Slightly smaller text fits better */
 }
+
+/* ====================================
+   SAVE CHARACTER MESSAGE STYLES
+   ==================================== */
+
+/* Success message that appears after saving character */
+/* Positioned at top-center of screen, slides down with animation */
+.save-message {
+    position: fixed; /* Stay in place even if page scrolls */
+    top: 100px; /* Position below header */
+    left: 50%; /* Start at horizontal center */
+    transform: translateX(-50%); /* Adjust for element's own width to truly center */
+    padding: 20px 40px; /* Generous padding makes message prominent */
+    background: #4CAF50; /* Green background indicates success */
+    color: white; /* White text for high contrast and readability */
+    font-weight: bold;
+    font-size: 1.2em; /* Large text is easy to read quickly */
+    border-radius: 15px; /* Rounded corners match app style */
+    box-shadow: 0 5px 20px rgba(0,0,0,0.3); /* Strong shadow adds depth and emphasis */
+    z-index: 2000; /* Very high z-index ensures message appears above everything */
+    animation: slideDown 0.5s ease; /* Slide down animation on appearance */
+}
+
+/* Fade out class - added before removing message */
+/* Triggers opacity transition for smooth disappearance */
+.save-message.fade-out {
+    opacity: 0; /* Fade to invisible */
+    transition: opacity 0.5s ease; /* Smooth fade over half second */
+}
+
+/* Slide down animation - message enters from above */
+/* Creates a satisfying "notification" effect */
+@keyframes slideDown {
+    from {
+        transform: translateX(-50%) translateY(-50px); /* Start 50px above final position */
+        opacity: 0; /* Start invisible */
+    }
+    to {
+        transform: translateX(-50%) translateY(0); /* End at final position */
+        opacity: 1; /* End fully visible */
+    }
+}
