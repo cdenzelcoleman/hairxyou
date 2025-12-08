@@ -330,3 +330,129 @@ header h1 {
         padding: 15px;
     }
 }
+
+/* ====================================
+   HAIR CARE ACTIVITY STYLES
+   ==================================== */
+
+/* Activity intro box - appears at top of each activity panel */
+.activity-intro {
+    margin-bottom: 20px;
+    padding: 15px;
+    /* Light blue gradient creates a calm, spa-like feeling for hair care */
+    background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%);
+    border-radius: 12px;
+}
+
+.activity-intro h3 {
+    color: #1976D2; /* Blue shade matching the intro background */
+    margin-bottom: 8px;
+}
+
+.activity-intro p {
+    color: #424242; /* Dark gray for readability */
+    font-size: 0.9em;
+}
+
+/* Container for hair care step buttons - stacks vertically */
+.steps-container {
+    display: flex;
+    flex-direction: column; /* Vertical stack of step buttons */
+    gap: 10px; /* Space between each step button */
+    margin-bottom: 20px;
+}
+
+/* Individual step button (Wet, Shampoo, Condition, etc.) */
+.step-btn {
+    display: flex;
+    align-items: center; /* Vertically center icon and text */
+    gap: 12px; /* Space between icon and step name */
+    padding: 12px;
+    background: white;
+    border: 2px solid #ddd;
+    border-radius: 12px; /* Rounded corners for friendly appearance */
+    cursor: pointer;
+    transition: all 0.3s ease; /* Smooth hover animation */
+    font-family: inherit;
+}
+
+/* Step button hover effect - slides right and changes border color */
+.step-btn:hover {
+    background: #f8f9fa; /* Very light gray background */
+    border-color: #6C5B7B; /* Purple border on hover */
+    transform: translateX(3px); /* Slight slide to the right */
+}
+
+/* Step icon (emoji) styling */
+.step-icon {
+    font-size: 1.5em; /* Make icons prominent */
+}
+
+/* Step name text styling */
+.step-name {
+    font-weight: bold;
+    color: #424242;
+}
+
+/* Instruction area - shows interactive instructions during hair care steps */
+/* Styled like a highlighted note or callout box */
+.instruction-area {
+    padding: 15px;
+    background: #fff9e6; /* Light yellow background like a sticky note */
+    border-radius: 12px;
+    border: 2px dashed #FFB300; /* Dashed yellow border adds emphasis */
+}
+
+.instruction-area p {
+    margin-bottom: 10px;
+    color: #424242;
+}
+
+/* Progress bar container - shows completion progress for current step */
+.progress-bar {
+    width: 100%;
+    height: 20px; /* Tall enough to be clearly visible */
+    background: #e0e0e0; /* Light gray background */
+    border-radius: 10px; /* Rounded ends */
+    overflow: hidden; /* Keeps fill bar rounded at edges */
+    margin-top: 10px;
+}
+
+/* Progress bar fill - animates width from 0% to 100% as user clicks */
+/* This is the pink/purple gradient that grows with each click */
+.progress-fill {
+    height: 100%; /* Fill full height of container */
+    /* Gradient matches the main theme colors */
+    background: linear-gradient(90deg, #FF6B9D 0%, #C06C84 100%);
+    transition: width 0.3s ease; /* Smooth animation as width changes */
+}
+
+/* Success message shown when step is complete */
+.success-message {
+    color: #4CAF50; /* Green color indicates success */
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+/* Sparkle effect - animated emoji that appears at click location */
+/* Provides immediate visual feedback for each click */
+.sparkle {
+    position: fixed; /* Position relative to viewport, not parent */
+    font-size: 2em; /* Large sparkle is more visible */
+    pointer-events: none; /* Don't block clicks or interfere with interactions */
+    animation: sparkleFloat 1s ease-out forwards; /* Run animation once */
+    z-index: 1000; /* Appear above all other content */
+}
+
+/* Sparkle animation - floats up and fades out */
+/* Creates a magical, satisfying effect for each click */
+@keyframes sparkleFloat {
+    0% {
+        transform: translateY(0) scale(1); /* Start at click position, normal size */
+        opacity: 1; /* Fully visible */
+    }
+    100% {
+        transform: translateY(-50px) scale(0.5); /* Float up 50px, shrink to half size */
+        opacity: 0; /* Fade to invisible */
+    }
+}
