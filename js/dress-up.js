@@ -1,5 +1,5 @@
 // Fashion system for outfit selection
-// This module manages tops (including dresses) and bottoms selection
+// This module manages tops (including dresses), bottoms, and shoes selection
 // Dresses are special tops that hide bottoms when worn
 
 // Outfit catalog - each item has an ID, display name, and base color
@@ -19,18 +19,24 @@ const outfits = {
         { id: 'skirt-pink', name: 'Pink Skirt', color: '#FF69B4' },
         { id: 'skirt-purple', name: 'Purple Skirt', color: '#9B59B6' },
         { id: 'shorts-blue', name: 'Blue Shorts', color: '#3498DB' }
+    ],
+    shoes: [
+        { id: 'sneakers', name: 'White Sneakers', color: '#FFFFFF' },
+        { id: 'boots-black', name: 'Black Boots', color: '#000000' },
+        { id: 'sandals-pink', name: 'Pink Sandals', color: '#FF69B4' },
+        { id: 'heels-red', name: 'Red Heels', color: '#E74C3C' }
     ]
 };
 
 // Main UI loader for dress up activity
-// Creates two sections: one for tops, one for bottoms
+// Creates three sections: tops, bottoms, and shoes
 function loadDressUp(container) {
     container.innerHTML = '';
 
     // Activity header with instructions
     const intro = document.createElement('div');
     intro.className = 'activity-intro';
-    intro.innerHTML = `<h3>Dress Up</h3><p>Choose your outfit!</p>`;
+    intro.innerHTML = `<h3>Dress Up</h3><p>Choose your complete outfit!</p>`;
     container.appendChild(intro);
 
     // TOPS SECTION
@@ -102,6 +108,40 @@ function loadDressUp(container) {
 
     bottomsSection.appendChild(bottomsGrid);
     container.appendChild(bottomsSection);
+
+    // SHOES SECTION
+    const shoesSection = document.createElement('div');
+    shoesSection.className = 'customization-section';
+    shoesSection.innerHTML = '<h3>Shoes</h3>';
+
+    const shoesGrid = document.createElement('div');
+    shoesGrid.className = 'outfit-grid';
+
+    // Create buttons for shoe options similar to tops and bottoms
+    outfits.shoes.forEach(shoe => {
+        const btn = document.createElement('button');
+        btn.className = 'outfit-btn';
+
+        // Same gradient technique for visual appeal
+        btn.style.background = `linear-gradient(135deg, ${shoe.color} 0%, ${adjustColor(shoe.color, -20)} 100%)`;
+        btn.innerHTML = `<span>${shoe.name}</span>`;
+
+        // Update shoes selection in state
+        btn.onclick = () => {
+            updateState('character.outfit.shoes', shoe.id);
+            loadDressUp(container);
+        };
+
+        // Highlight current selection
+        if (shoe.id === gameState.character.outfit.shoes) {
+            btn.classList.add('active');
+        }
+
+        shoesGrid.appendChild(btn);
+    });
+
+    shoesSection.appendChild(shoesGrid);
+    container.appendChild(shoesSection);
 }
 
 // Color adjustment utility for creating gradients

@@ -33,7 +33,7 @@ const gameState = {
         outfit: {
             top: 'tshirt-pink',      // ID of top clothing item
             bottom: 'jeans',         // ID of bottom clothing item
-            shoes: 'sneakers'        // Shoes (not rendered yet, but stored for future)
+            shoes: 'sneakers'        // ID of shoes item - rendered on feet
         },
 
         /* Nail polish properties */

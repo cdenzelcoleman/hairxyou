@@ -90,9 +90,9 @@ function saveCharacter() {
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d'); // Get 2D drawing context
 
-    // Match canvas size to SVG dimensions (from viewBox)
+    // Match canvas size to SVG dimensions (from viewBox) - updated for full body
     canvas.width = 400;
-    canvas.height = 600;
+    canvas.height = 900;
 
     // Step 3: Create blob from SVG string
     const img = new Image(); // Will hold the rasterized SVG
