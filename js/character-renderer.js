@@ -28,6 +28,13 @@ function renderCharacter() {
     // Clear previous rendering - start fresh each time
     svg.innerHTML = '';
 
+    // GRAPHICS ENHANCEMENT: Define gradient and filter definitions for enhanced visuals
+    const defs = createSVGElement('defs', {});
+    svg.appendChild(defs);
+
+    // Create lighting effects once for the entire character
+    createLightingEffects(defs);
+
     // Render in correct z-order (back to front)
     // Body parts first, then details on top
     renderBody(svg, state);
@@ -40,19 +47,299 @@ function renderCharacter() {
 }
 
 /**
+ * GRAPHICS ENHANCEMENT: Creates lighting effects, gradients, and filters
+ * This function sets up reusable SVG definitions for enhanced visuals
+ * MONSTER HIGH STYLE: Added bold outlines, glossy effects, sparkle patterns
+ */
+function createLightingEffects(defs) {
+    // Drop shadow filter for depth (used on all major elements)
+    const dropShadow = createSVGElement('filter', { id: 'dropShadow' });
+    const feGaussianBlur = createSVGElement('feGaussianBlur', {
+        in: 'SourceAlpha',
+        stdDeviation: '3'
+    });
+    const feOffset = createSVGElement('feOffset', {
+        dx: '2',
+        dy: '4',
+        result: 'offsetblur'
+    });
+    const feFlood = createSVGElement('feFlood', {
+        'flood-color': '#000000',
+        'flood-opacity': '0.3'
+    });
+    const feComposite1 = createSVGElement('feComposite', {
+        in2: 'offsetblur',
+        operator: 'in'
+    });
+    const feMerge = createSVGElement('feMerge', {});
+    const feMergeNode1 = createSVGElement('feMergeNode', {});
+    const feMergeNode2 = createSVGElement('feMergeNode', { in: 'SourceGraphic' });
+
+    feMerge.appendChild(feMergeNode1);
+    feMerge.appendChild(feMergeNode2);
+    dropShadow.appendChild(feGaussianBlur);
+    dropShadow.appendChild(feOffset);
+    dropShadow.appendChild(feFlood);
+    dropShadow.appendChild(feComposite1);
+    dropShadow.appendChild(feMerge);
+    defs.appendChild(dropShadow);
+
+    // Inner shadow for subtle depth on skin
+    const innerShadow = createSVGElement('filter', { id: 'innerShadow' });
+    const feGaussianBlur2 = createSVGElement('feGaussianBlur', {
+        in: 'SourceAlpha',
+        stdDeviation: '2'
+    });
+    const feOffset2 = createSVGElement('feOffset', {
+        dx: '0',
+        dy: '2'
+    });
+    const feComposite2 = createSVGElement('feComposite', {
+        in2: 'SourceAlpha',
+        operator: 'arithmetic',
+        k2: '-1',
+        k3: '1'
+    });
+    const feColorMatrix = createSVGElement('feColorMatrix', {
+        type: 'matrix',
+        values: '0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.15 0'
+    });
+    innerShadow.appendChild(feGaussianBlur2);
+    innerShadow.appendChild(feOffset2);
+    innerShadow.appendChild(feComposite2);
+    innerShadow.appendChild(feColorMatrix);
+    defs.appendChild(innerShadow);
+
+    // Soft glow effect for highlights
+    const softGlow = createSVGElement('filter', { id: 'softGlow' });
+    const feGaussianBlur3 = createSVGElement('feGaussianBlur', {
+        stdDeviation: '2',
+        result: 'coloredBlur'
+    });
+    const feMerge2 = createSVGElement('feMerge', {});
+    const feMergeNode3 = createSVGElement('feMergeNode', { in: 'coloredBlur' });
+    const feMergeNode4 = createSVGElement('feMergeNode', { in: 'SourceGraphic' });
+    feMerge2.appendChild(feMergeNode3);
+    feMerge2.appendChild(feMergeNode4);
+    softGlow.appendChild(feGaussianBlur3);
+    softGlow.appendChild(feMerge2);
+    defs.appendChild(softGlow);
+
+    // MONSTER HIGH STYLE: Sparkle pattern for hair and clothes
+    const sparklePattern = createSVGElement('pattern', {
+        id: 'sparklePattern',
+        width: '50',
+        height: '50',
+        patternUnits: 'userSpaceOnUse'
+    });
+
+    // Create small sparkle stars at random positions
+    const sparklePositions = [
+        {x: 5, y: 8, size: 2},
+        {x: 25, y: 15, size: 3},
+        {x: 40, y: 5, size: 1.5},
+        {x: 15, y: 35, size: 2.5},
+        {x: 35, y: 40, size: 2}
+    ];
+
+    sparklePositions.forEach(pos => {
+        const sparkle = createSVGElement('circle', {
+            cx: pos.x,
+            cy: pos.y,
+            r: pos.size,
+            fill: 'white',
+            opacity: '0.7'
+        });
+        sparklePattern.appendChild(sparkle);
+
+        // Add star shape for variety
+        const star = createSVGElement('polygon', {
+            points: `${pos.x+10},${pos.y-1} ${pos.x+11},${pos.y+2} ${pos.x+14},${pos.y+2} ${pos.x+12},${pos.y+4} ${pos.x+13},${pos.y+7} ${pos.x+10},${pos.y+5} ${pos.x+7},${pos.y+7} ${pos.x+8},${pos.y+4} ${pos.x+6},${pos.y+2} ${pos.x+9},${pos.y+2}`,
+            fill: 'white',
+            opacity: '0.6'
+        });
+        sparklePattern.appendChild(star);
+    });
+
+    defs.appendChild(sparklePattern);
+
+    // MONSTER HIGH STYLE: Glossy shine gradient for lips and nails
+    const glossGradient = createSVGElement('linearGradient', {
+        id: 'glossGradient',
+        x1: '0%',
+        y1: '0%',
+        x2: '0%',
+        y2: '100%'
+    });
+
+    const glossStop1 = createSVGElement('stop', {
+        offset: '0%',
+        'stop-color': 'white',
+        'stop-opacity': '0.9'
+    });
+    const glossStop2 = createSVGElement('stop', {
+        offset: '50%',
+        'stop-color': 'white',
+        'stop-opacity': '0.3'
+    });
+    const glossStop3 = createSVGElement('stop', {
+        offset: '100%',
+        'stop-color': 'white',
+        'stop-opacity': '0'
+    });
+
+    glossGradient.appendChild(glossStop1);
+    glossGradient.appendChild(glossStop2);
+    glossGradient.appendChild(glossStop3);
+    defs.appendChild(glossGradient);
+}
+
+/**
+ * Helper function to create a skin gradient for realistic shading
+ * This creates a radial gradient that adds depth to skin tones
+ */
+function createSkinGradient(defs, id, baseColor) {
+    const gradient = createSVGElement('radialGradient', {
+        id: id,
+        cx: '40%',  // Light source from upper left
+        cy: '30%',
+        r: '80%'
+    });
+
+    // Lighter highlight in the center (where light hits)
+    const stop1 = createSVGElement('stop', {
+        offset: '0%',
+        'stop-color': lightenColor(baseColor, 15),
+        'stop-opacity': '1'
+    });
+
+    // Base color in the middle
+    const stop2 = createSVGElement('stop', {
+        offset: '60%',
+        'stop-color': baseColor,
+        'stop-opacity': '1'
+    });
+
+    // Darker shade at the edges (shadow areas)
+    const stop3 = createSVGElement('stop', {
+        offset: '100%',
+        'stop-color': darkenColor(baseColor, 12),
+        'stop-opacity': '1'
+    });
+
+    gradient.appendChild(stop1);
+    gradient.appendChild(stop2);
+    gradient.appendChild(stop3);
+    defs.appendChild(gradient);
+}
+
+/**
+ * Helper function to lighten a hex color by a percentage
+ */
+function lightenColor(color, percent) {
+    const num = parseInt(color.replace("#",""), 16);
+    const amt = Math.round(2.55 * percent);
+    const R = Math.min(255, (num >> 16) + amt);
+    const G = Math.min(255, (num >> 8 & 0x00FF) + amt);
+    const B = Math.min(255, (num & 0x0000FF) + amt);
+    return "#" + (0x1000000 + R * 0x10000 + G * 0x100 + B).toString(16).slice(1);
+}
+
+/**
+ * Helper function to darken a hex color by a percentage
+ */
+function darkenColor(color, percent) {
+    const num = parseInt(color.replace("#",""), 16);
+    const amt = Math.round(2.55 * percent);
+    const R = Math.max(0, (num >> 16) - amt);
+    const G = Math.max(0, (num >> 8 & 0x00FF) - amt);
+    const B = Math.max(0, (num & 0x0000FF) - amt);
+    return "#" + (0x1000000 + R * 0x10000 + G * 0x100 + B).toString(16).slice(1);
+}
+
+/**
+ * MONSTER HIGH STYLE: Helper function to boost color saturation
+ * Makes colors more vibrant and vivid for that dress-up game look
+ */
+function boostSaturation(color, percent) {
+    // Convert hex to RGB
+    const num = parseInt(color.replace("#",""), 16);
+    let r = (num >> 16) / 255;
+    let g = (num >> 8 & 0x00FF) / 255;
+    let b = (num & 0x0000FF) / 255;
+
+    // Convert to HSL
+    const max = Math.max(r, g, b);
+    const min = Math.min(r, g, b);
+    let h, s, l = (max + min) / 2;
+
+    if (max === min) {
+        h = s = 0; // achromatic
+    } else {
+        const d = max - min;
+        s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+
+        switch (max) {
+            case r: h = ((g - b) / d + (g < b ? 6 : 0)) / 6; break;
+            case g: h = ((b - r) / d + 2) / 6; break;
+            case b: h = ((r - g) / d + 4) / 6; break;
+        }
+    }
+
+    // Boost saturation
+    s = Math.min(1, s * (1 + percent / 100));
+
+    // Convert back to RGB
+    let r2, g2, b2;
+    if (s === 0) {
+        r2 = g2 = b2 = l;
+    } else {
+        const hue2rgb = (p, q, t) => {
+            if (t < 0) t += 1;
+            if (t > 1) t -= 1;
+            if (t < 1/6) return p + (q - p) * 6 * t;
+            if (t < 1/2) return q;
+            if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+            return p;
+        };
+
+        const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+        const p = 2 * l - q;
+        r2 = hue2rgb(p, q, h + 1/3);
+        g2 = hue2rgb(p, q, h);
+        b2 = hue2rgb(p, q, h - 1/3);
+    }
+
+    // Convert back to hex
+    const R = Math.round(r2 * 255);
+    const G = Math.round(g2 * 255);
+    const B = Math.round(b2 * 255);
+    return "#" + (0x1000000 + R * 0x10000 + G * 0x100 + B).toString(16).slice(1);
+}
+
+/**
  * Renders the body (torso) of the character.
- * Uses an ellipse positioned at the lower part of the SVG canvas.
+ * ENHANCED: Now with gradient shading for depth and realistic lighting
+ * MONSTER HIGH STYLE: Bold black outline for that cartoon/anime look
  *
  * Position: Center-bottom of canvas (x=200, y=480)
  * Size: rx=80 (width), ry=100 (height)
  */
 function renderBody(svg, state) {
+    const defs = svg.querySelector('defs');
+
+    // Create gradient for body with lighting
+    createSkinGradient(defs, 'bodyGradient', state.appearance.skinTone);
+
     const body = createSVGElement('ellipse', {
         cx: '200',      // Horizontal center of 400px canvas
         cy: '480',      // Lower in canvas (body below head)
         rx: '80',       // Width radius - makes body wider
         ry: '100',      // Height radius - makes body taller vertically
-        fill: state.appearance.skinTone,  // Use character's skin color
+        fill: 'url(#bodyGradient)',  // ENHANCED: Use gradient instead of flat color
+        stroke: '#000000',           // MONSTER HIGH: Bold black outline
+        'stroke-width': '4',         // MONSTER HIGH: 4px thick outline
+        filter: 'url(#dropShadow)',  // ENHANCED: Add drop shadow for depth
         id: 'body'
     });
     svg.appendChild(body);
@@ -60,17 +347,25 @@ function renderBody(svg, state) {
 
 /**
  * Renders the neck connecting head to body.
- * Simple rectangle positioned between head and body.
+ * ENHANCED: Now with gradient shading for depth
+ * MONSTER HIGH STYLE: Bold black outline
  *
  * Position: x=180, y=360 (between head at ~280 and body at ~480)
  */
 function renderNeck(svg, state) {
+    const defs = svg.querySelector('defs');
+
+    // Create gradient for neck
+    createSkinGradient(defs, 'neckGradient', state.appearance.skinTone);
+
     const neck = createSVGElement('rect', {
         x: '180',       // Slightly left of center (200-20)
         y: '360',       // Between head and body vertically
         width: '40',    // Narrow width for realistic neck
         height: '50',   // Connects head (ends ~390) to body (starts ~380)
-        fill: state.appearance.skinTone,  // Same color as skin
+        fill: 'url(#neckGradient)',  // ENHANCED: Use gradient
+        stroke: '#000000',            // MONSTER HIGH: Bold black outline
+        'stroke-width': '3',          // MONSTER HIGH: 3px outline
         id: 'neck'
     });
     svg.appendChild(neck);
@@ -78,21 +373,41 @@ function renderNeck(svg, state) {
 
 /**
  * Renders the head (face base) of the character.
- * Larger ellipse positioned in upper-middle of canvas.
+ * ENHANCED: Now with gradient shading and subtle texture for realistic skin
+ * MONSTER HIGH STYLE: Bold black outline and rounder proportions
  *
  * Position: Center-top of canvas (x=200, y=280)
  * Size: rx=90, ry=110 (taller than wide for natural head shape)
  */
 function renderHead(svg, state) {
+    const defs = svg.querySelector('defs');
+
+    // Create gradient for head with top-down lighting
+    createSkinGradient(defs, 'headGradient', state.appearance.skinTone);
+
     const head = createSVGElement('ellipse', {
         cx: '200',      // Horizontal center
         cy: '280',      // Upper portion of canvas
-        rx: '90',       // Width radius
-        ry: '110',      // Height radius - taller for head shape
-        fill: state.appearance.skinTone,
+        rx: '95',       // MONSTER HIGH: Slightly wider for cuter proportions
+        ry: '115',      // MONSTER HIGH: Slightly taller for rounder face
+        fill: 'url(#headGradient)',  // ENHANCED: Use gradient for depth
+        stroke: '#000000',            // MONSTER HIGH: Bold black outline
+        'stroke-width': '4',          // MONSTER HIGH: 4px thick outline
+        filter: 'url(#dropShadow)',  // ENHANCED: Add shadow for depth
         id: 'head'
     });
     svg.appendChild(head);
+
+    // ENHANCED: Add subtle rim lighting on the left side of face
+    const rimLight = createSVGElement('ellipse', {
+        cx: '140',      // Left side of face
+        cy: '280',
+        rx: '15',       // Thin vertical strip
+        ry: '80',
+        fill: 'white',
+        opacity: '0.15' // Very subtle highlight
+    });
+    svg.appendChild(rimLight);
 }
 
 /**
@@ -129,13 +444,40 @@ function renderFacialFeatures(svg, state) {
     }
 
     // EYES - Built in layers: white -> iris -> pupil -> highlight
+    // ENHANCED: Added shadows, gradients, and better depth
+    // MONSTER HIGH STYLE: 40% BIGGER eyes with bold outlines and glossy shine
+
+    // Left eye shadow - creates depth under the eye
+    const leftEyeShadow = createSVGElement('ellipse', {
+        cx: '170',
+        cy: '272',
+        rx: '22',       // MONSTER HIGH: 40% bigger (16 * 1.4 = 22.4)
+        ry: '27',       // MONSTER HIGH: 40% bigger (19 * 1.4 = 26.6)
+        fill: 'black',
+        opacity: '0.12' // MONSTER HIGH: Slightly darker shadow
+    });
+    svg.appendChild(leftEyeShadow);
+
+    // Right eye shadow
+    const rightEyeShadow = createSVGElement('ellipse', {
+        cx: '230',
+        cy: '272',
+        rx: '22',       // MONSTER HIGH: 40% bigger
+        ry: '27',       // MONSTER HIGH: 40% bigger
+        fill: 'black',
+        opacity: '0.12'
+    });
+    svg.appendChild(rightEyeShadow);
+
     // Left eye white
     const leftEyeWhite = createSVGElement('ellipse', {
         cx: '170',      // Left side of face
         cy: '270',      // Eye level
-        rx: '15',       // Width of eye
-        ry: '18',       // Height slightly taller
-        fill: 'white'
+        rx: '21',       // MONSTER HIGH: 40% bigger (15 * 1.4 = 21)
+        ry: '25',       // MONSTER HIGH: 40% bigger (18 * 1.4 = 25.2)
+        fill: 'white',
+        stroke: '#000000',              // MONSTER HIGH: Bold black outline
+        'stroke-width': '3'             // MONSTER HIGH: 3px outline
     });
     svg.appendChild(leftEyeWhite);
 
@@ -143,114 +485,219 @@ function renderFacialFeatures(svg, state) {
     const rightEyeWhite = createSVGElement('ellipse', {
         cx: '230',      // Right side of face (60px apart for spacing)
         cy: '270',      // Same level as left eye
-        rx: '15', ry: '18',
-        fill: 'white'
+        rx: '21',       // MONSTER HIGH: 40% bigger
+        ry: '25',       // MONSTER HIGH: 40% bigger
+        fill: 'white',
+        stroke: '#000000',              // MONSTER HIGH: Bold black outline
+        'stroke-width': '3'             // MONSTER HIGH: 3px outline
     });
     svg.appendChild(rightEyeWhite);
 
-    // Left iris (colored part of eye - brown)
+    // ENHANCED: Create iris gradients for depth
+    const defs = svg.querySelector('defs');
+    const irisGradient = createSVGElement('radialGradient', {
+        id: 'irisGradient',
+        cx: '40%',
+        cy: '40%'
+    });
+    const irisStop1 = createSVGElement('stop', {
+        offset: '0%',
+        'stop-color': '#6B3A1E'
+    });
+    const irisStop2 = createSVGElement('stop', {
+        offset: '70%',
+        'stop-color': '#4A2511'
+    });
+    const irisStop3 = createSVGElement('stop', {
+        offset: '100%',
+        'stop-color': '#2C1508'
+    });
+    irisGradient.appendChild(irisStop1);
+    irisGradient.appendChild(irisStop2);
+    irisGradient.appendChild(irisStop3);
+    defs.appendChild(irisGradient);
+
+    // Left iris (colored part of eye - brown with gradient)
     const leftIris = createSVGElement('circle', {
         cx: '170',
         cy: '272',      // Slightly lower than white for positioning
-        r: '10',        // Smaller than white, sits inside
-        fill: '#4A2511' // Brown color
+        r: '14',        // MONSTER HIGH: Bigger iris (10 * 1.4 = 14)
+        fill: 'url(#irisGradient)',  // ENHANCED: Use gradient for depth
+        filter: 'url(#innerShadow)'  // ENHANCED: Add inner shadow
     });
     svg.appendChild(leftIris);
 
     // Right iris
     const rightIris = createSVGElement('circle', {
-        cx: '230', cy: '272', r: '10',
-        fill: '#4A2511'
+        cx: '230', cy: '272',
+        r: '14',        // MONSTER HIGH: Bigger iris
+        fill: 'url(#irisGradient)',  // ENHANCED: Use gradient
+        filter: 'url(#innerShadow)'
     });
     svg.appendChild(rightIris);
 
-    // Left pupil (black center)
+    // Left pupil (black center with subtle gradient)
     const leftPupil = createSVGElement('circle', {
         cx: '170', cy: '272',
-        r: '5',         // Smaller than iris
+        r: '7',         // MONSTER HIGH: Bigger pupil (5 * 1.4 = 7)
         fill: 'black'
     });
     svg.appendChild(leftPupil);
 
     // Right pupil
     const rightPupil = createSVGElement('circle', {
-        cx: '230', cy: '272', r: '5',
+        cx: '230', cy: '272',
+        r: '7',         // MONSTER HIGH: Bigger pupil
         fill: 'black'
     });
     svg.appendChild(rightPupil);
 
-    // Eye highlights (white dots that make eyes look shiny/alive)
-    const leftHighlight = createSVGElement('circle', {
-        cx: '172',      // Slightly offset from center
-        cy: '270',      // Upper part of eye
-        r: '3',         // Small dot
-        fill: 'white'
+    // MONSTER HIGH STYLE: HUGE glossy highlight - the signature anime eye shine!
+    const leftHighlight = createSVGElement('ellipse', {
+        cx: '174',      // Slightly offset from center
+        cy: '266',      // Upper part of eye
+        rx: '8',        // MONSTER HIGH: HUGE oval highlight
+        ry: '12',       // MONSTER HIGH: Tall oval for that anime sparkle
+        fill: 'white',
+        opacity: '0.95',
+        filter: 'url(#softGlow)'  // ENHANCED: Add soft glow
     });
     svg.appendChild(leftHighlight);
 
-    const rightHighlight = createSVGElement('circle', {
-        cx: '232', cy: '270', r: '3',
-        fill: 'white'
+    const rightHighlight = createSVGElement('ellipse', {
+        cx: '234', cy: '266',
+        rx: '8',        // MONSTER HIGH: HUGE oval highlight
+        ry: '12',       // MONSTER HIGH: Tall oval
+        fill: 'white',
+        opacity: '0.95',
+        filter: 'url(#softGlow)'
     });
     svg.appendChild(rightHighlight);
 
+    // MONSTER HIGH STYLE: Add secondary sparkle for extra cuteness
+    const leftHighlight2 = createSVGElement('circle', {
+        cx: '166',
+        cy: '277',
+        r: '3',         // MONSTER HIGH: Bigger secondary highlight
+        fill: 'white',
+        opacity: '0.8'
+    });
+    svg.appendChild(leftHighlight2);
+
+    const rightHighlight2 = createSVGElement('circle', {
+        cx: '226',
+        cy: '277',
+        r: '3',         // MONSTER HIGH: Bigger secondary highlight
+        fill: 'white',
+        opacity: '0.8'
+    });
+    svg.appendChild(rightHighlight2);
+
     // EYELASHES - Three lines per eye extending upward
+    // MONSTER HIGH STYLE: Thicker, more dramatic lashes
     // Loop creates 3 lashes per eye, evenly spaced
     for(let i = 0; i < 3; i++) {
         // Left eye lashes
         const leftLash = createSVGElement('line', {
-            x1: 160 + (i * 5),  // Start x (spaced 5px apart)
-            y1: '260',          // Start y (at top of eye)
-            x2: 158 + (i * 5),  // End x (slightly inward for curve)
-            y2: '255',          // End y (5px above start)
+            x1: 155 + (i * 7),  // Start x (spaced wider for bigger eyes)
+            y1: '255',          // Start y (adjusted for bigger eyes)
+            x2: 153 + (i * 7),  // End x (slightly inward for curve)
+            y2: '248',          // End y (longer lashes)
             stroke: 'black',
-            'stroke-width': '2',
+            'stroke-width': '4',        // MONSTER HIGH: Thicker lashes (was 2)
             'stroke-linecap': 'round'  // Rounded ends
         });
         svg.appendChild(leftLash);
 
         // Right eye lashes (mirror of left)
         const rightLash = createSVGElement('line', {
-            x1: 240 + (i * 5),  // Starts further right
-            y1: '260',
-            x2: 238 + (i * 5),
-            y2: '255',
+            x1: 238 + (i * 7),  // Starts further right
+            y1: '255',
+            x2: 236 + (i * 7),
+            y2: '248',
             stroke: 'black',
-            'stroke-width': '2',
+            'stroke-width': '4',        // MONSTER HIGH: Thicker lashes
             'stroke-linecap': 'round'
         });
         svg.appendChild(rightLash);
     }
 
-    // NOSE - Simple ellipse in center of face
+    // NOSE - ENHANCED: Better rendering with shadow and gradient
+    // Create nose shadow for depth
+    const noseShadow = createSVGElement('ellipse', {
+        cx: '200',
+        cy: '305',      // Below nose for shadow
+        rx: '10',
+        ry: '6',
+        fill: 'black',
+        opacity: '0.08' // Very subtle shadow
+    });
+    svg.appendChild(noseShadow);
+
+    // Nose with gradient for realistic shading
     const nose = createSVGElement('ellipse', {
         cx: '200',      // Center of face
         cy: '300',      // Below eyes
         rx: '8',        // Small width
         ry: '12',       // Taller than wide
-        fill: state.appearance.skinTone,
-        opacity: '0.8'  // Slightly see-through for subtle effect
+        fill: darkenColor(state.appearance.skinTone, 8),  // ENHANCED: Slightly darker than skin
+        opacity: '0.6'  // Slightly see-through for subtle effect
     });
     svg.appendChild(nose);
 
-    // MOUTH - Curved path that smiles
+    // ENHANCED: Add nose highlight for dimension
+    const noseHighlight = createSVGElement('ellipse', {
+        cx: '198',
+        cy: '297',
+        rx: '3',
+        ry: '5',
+        fill: 'white',
+        opacity: '0.3'  // Subtle shine on nose bridge
+    });
+    svg.appendChild(noseHighlight);
+
+    // MOUTH - ENHANCED: Better rendering with gradients and shadows
+    // MONSTER HIGH STYLE: Fuller lips with glossy shine
     // Color and thickness change if lipstick is applied
     const mouthColor = (state.makeup.lipstick && state.makeup.lipstick !== 'none')
-        ? state.makeup.lipstick  // Use lipstick color if applied
+        ? boostSaturation(state.makeup.lipstick, 30)  // MONSTER HIGH: Boost saturation
         : '#8B4513';             // Default brown/neutral
     const mouthWidth = (state.makeup.lipstick && state.makeup.lipstick !== 'none')
-        ? '5'   // Thicker line with lipstick
-        : '3';  // Normal line without
+        ? '8'   // MONSTER HIGH: Even thicker for fuller lips
+        : '4';  // MONSTER HIGH: Thicker default
 
-    // Path creates a smile curve using quadratic bezier (Q)
+    // ENHANCED: Add mouth shadow underneath for depth
+    const mouthShadow = createSVGElement('path', {
+        d: 'M 180 332 Q 200 347 220 332',
+        stroke: 'black',
+        'stroke-width': mouthWidth,
+        fill: 'none',
+        'stroke-linecap': 'round',
+        opacity: '0.15'  // Subtle shadow
+    });
+    svg.appendChild(mouthShadow);
+
+    // Main mouth - Path creates a smile curve using quadratic bezier (Q)
     const mouth = createSVGElement('path', {
         d: 'M 180 330 Q 200 345 220 330',  // Start 180, curve down to 345, end 220
         stroke: mouthColor,
         'stroke-width': mouthWidth,
         fill: 'none',              // No fill, just outline
-        'stroke-linecap': 'round'  // Rounded ends
+        'stroke-linecap': 'round',  // Rounded ends
+        filter: state.makeup.lipstick !== 'none' ? 'url(#softGlow)' : 'none'  // ENHANCED: Glow for lipstick
     });
     svg.appendChild(mouth);
+
+    // MONSTER HIGH STYLE: Always add glossy lip shine for that polished look!
+    const lipShine = createSVGElement('ellipse', {
+        cx: '200',
+        cy: '337',      // Center of lower lip
+        rx: '12',       // MONSTER HIGH: Bigger shine spot
+        ry: '4',        // MONSTER HIGH: Taller shine
+        fill: 'url(#glossGradient)',  // MONSTER HIGH: Use gloss gradient
+        opacity: state.makeup.lipstick !== 'none' ? '0.7' : '0.4'  // More shine with lipstick
+    });
+    svg.appendChild(lipShine);
 
     // CHEEKS - Pink blush effect on sides of face
     const leftCheek = createSVGElement('ellipse', {
@@ -356,6 +803,7 @@ function renderOutfit(svg, state) {
 /**
  * Renders the character's nails.
  * Small ellipses positioned at hand locations.
+ * MONSTER HIGH STYLE: Glossy nails with shine and bold outlines
  *
  * Shows 4 nails (2 per hand) at the sides of the body.
  */
@@ -370,42 +818,58 @@ function renderNails(svg, state) {
 
     // Create a small ellipse for each nail position
     nailPositions.forEach(pos => {
+        // MONSTER HIGH: Boost nail color saturation
+        const nailColor = boostSaturation(state.nails.color, 40);
+
         const nail = createSVGElement('ellipse', {
             cx: pos.x,
             cy: pos.y,
-            rx: '4',        // Small width
-            ry: '6',        // Slightly taller (oval shape)
-            fill: state.nails.color,  // Use chosen nail color
-            stroke: 'rgba(0,0,0,0.2)',  // Subtle dark outline
-            'stroke-width': '1'
+            rx: '5',        // MONSTER HIGH: Slightly bigger
+            ry: '7',        // MONSTER HIGH: Slightly taller
+            fill: nailColor,  // Use boosted color
+            stroke: '#000000',          // MONSTER HIGH: Bold black outline
+            'stroke-width': '2'         // MONSTER HIGH: 2px outline
         });
         svg.appendChild(nail);
+
+        // MONSTER HIGH: Add glossy shine on each nail
+        const nailShine = createSVGElement('ellipse', {
+            cx: pos.x,
+            cy: pos.y - 2,  // Top of nail
+            rx: '2',
+            ry: '3',
+            fill: 'white',
+            opacity: '0.7'  // Glossy effect
+        });
+        svg.appendChild(nailShine);
     });
 }
 
 /**
  * Helper function to get outfit data (colors and IDs).
  * Takes outfit IDs and returns the corresponding outfit objects.
+ * MONSTER HIGH STYLE: Boosted color saturation for vibrant outfits
  *
  * This data structure maps outfit IDs to colors.
  * Each outfit has an id and color property.
  */
 function getOutfitData(topId, bottomId) {
     // Outfit database - maps IDs to properties
+    // MONSTER HIGH: All colors are more saturated and vibrant
     const allOutfits = {
         // T-shirts
-        'tshirt-pink': { id: 'tshirt-pink', color: '#FF69B4' },
-        'tshirt-purple': { id: 'tshirt-purple', color: '#9B59B6' },
-        'tshirt-blue': { id: 'tshirt-blue', color: '#3498DB' },
-        'tshirt-yellow': { id: 'tshirt-yellow', color: '#F1C40F' },
+        'tshirt-pink': { id: 'tshirt-pink', color: boostSaturation('#FF69B4', 30) },
+        'tshirt-purple': { id: 'tshirt-purple', color: boostSaturation('#9B59B6', 30) },
+        'tshirt-blue': { id: 'tshirt-blue', color: boostSaturation('#3498DB', 30) },
+        'tshirt-yellow': { id: 'tshirt-yellow', color: boostSaturation('#F1C40F', 30) },
         // Dresses
-        'dress-red': { id: 'dress-red', color: '#E74C3C' },
-        'dress-green': { id: 'dress-green', color: '#2ECC71' },
+        'dress-red': { id: 'dress-red', color: boostSaturation('#E74C3C', 30) },
+        'dress-green': { id: 'dress-green', color: boostSaturation('#2ECC71', 30) },
         // Bottoms
-        'jeans': { id: 'jeans', color: '#2C3E50' },
-        'skirt-pink': { id: 'skirt-pink', color: '#FF69B4' },
-        'skirt-purple': { id: 'skirt-purple', color: '#9B59B6' },
-        'shorts-blue': { id: 'shorts-blue', color: '#3498DB' }
+        'jeans': { id: 'jeans', color: boostSaturation('#2C3E50', 20) },
+        'skirt-pink': { id: 'skirt-pink', color: boostSaturation('#FF69B4', 30) },
+        'skirt-purple': { id: 'skirt-purple', color: boostSaturation('#9B59B6', 30) },
+        'shorts-blue': { id: 'shorts-blue', color: boostSaturation('#3498DB', 30) }
     };
 
     // Return object with top and bottom data

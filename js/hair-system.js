@@ -92,12 +92,16 @@ function renderHairByTexture(hairGroup, state) {
 
 /**
  * Renders an afro hairstyle with texture-specific properties
+ * ENHANCED: Now with gradients, highlights, and depth for level 5 graphics
+ * MONSTER HIGH STYLE: Bold outlines, glossy shine, and sparkle effects
  *
  * How it works:
- * 1. Creates a base ellipse for the overall afro shape
- * 2. Adds texture detail circles around the perimeter to show coil definition
- * 3. Tighter textures (4C) = more texture circles, more volume
- * 4. Looser textures (3A) = fewer texture circles, less volume
+ * 1. Creates a base ellipse for the overall afro shape with gradient
+ * 2. Adds shadow layer for depth
+ * 3. Adds texture detail circles around the perimeter to show coil definition
+ * 4. Adds highlight strands for realistic shine
+ * 5. Tighter textures (4C) = more texture circles, more volume
+ * 6. Looser textures (3A) = fewer texture circles, less volume
  *
  * SVG positioning notes:
  * - Center point (200, 200) is at top of head
@@ -118,14 +122,68 @@ function renderAfro(hairGroup, state, texture) {
     // 4C (0.95 tightness) = ~14 circles, 3A (0.45 tightness) = ~7 circles
     const coilCount = Math.floor(15 * texture.coilTightness);
 
-    // Create the main afro base shape - solid ellipse at top of head
-    // cy: 200 positions it at the head top, rx/ry create the rounded afro shape
+    // ENHANCED: Get defs for gradient creation
+    const svg = hairGroup.ownerSVGElement;
+    const defs = svg.querySelector('defs');
+
+    // MONSTER HIGH: Boost hair color saturation
+    const vibrantColor = boostSaturation(state.hair.color, 35);
+
+    // ENHANCED: Create hair gradient with highlights and shadows
+    const hairGradient = createSVGElement('radialGradient', {
+        id: 'afroGradient',
+        cx: '35%',  // Light from upper left
+        cy: '25%',
+        r: '75%'
+    });
+
+    const lightColor = lightenColor(vibrantColor, 30);  // MONSTER HIGH: Brighter highlight
+    const baseColor = vibrantColor;
+    const darkColor = darkenColor(vibrantColor, 15);    // Shadow color
+
+    const gradStop1 = createSVGElement('stop', {
+        offset: '0%',
+        'stop-color': lightColor,
+        'stop-opacity': '1'
+    });
+    const gradStop2 = createSVGElement('stop', {
+        offset: '50%',
+        'stop-color': baseColor,
+        'stop-opacity': '1'
+    });
+    const gradStop3 = createSVGElement('stop', {
+        offset: '100%',
+        'stop-color': darkColor,
+        'stop-opacity': '1'
+    });
+
+    hairGradient.appendChild(gradStop1);
+    hairGradient.appendChild(gradStop2);
+    hairGradient.appendChild(gradStop3);
+    defs.appendChild(hairGradient);
+
+    // ENHANCED: Add shadow underneath hair for depth
+    const afroShadow = createSVGElement('ellipse', {
+        cx: '200',
+        cy: '205',              // Slightly below main afro
+        rx: volume * 1.02,
+        ry: volume * 0.92,
+        fill: 'black',
+        opacity: '0.2',
+        filter: 'url(#dropShadow)'
+    });
+    hairGroup.appendChild(afroShadow);
+
+    // Create the main afro base shape with gradient
     const afroBase = createSVGElement('ellipse', {
         cx: '200',              // Centered horizontally in 400px viewBox
         cy: '200',              // Positioned at top of head
         rx: volume,             // Width influenced by texture volume
         ry: volume * 0.9,       // Slightly shorter vertically for natural afro shape
-        fill: state.hair.color  // Use character's chosen hair color
+        fill: 'url(#afroGradient)',  // ENHANCED: Use gradient instead of flat color
+        stroke: '#000000',           // MONSTER HIGH: Bold black outline
+        'stroke-width': '3',         // MONSTER HIGH: 3px outline
+        filter: 'url(#dropShadow)'   // ENHANCED: Add drop shadow
     });
     hairGroup.appendChild(afroBase);
 
@@ -153,6 +211,64 @@ function renderAfro(hairGroup, state, texture) {
             opacity: '0.6'  // Semi-transparent so they blend with base
         });
         hairGroup.appendChild(coil);
+    }
+
+    // MONSTER HIGH STYLE: Add BIG glossy shine spots for that polished look
+    const shineSpots = [
+        {x: 180, y: 180, rx: 30, ry: 40},  // Top left shine
+        {x: 220, y: 185, rx: 25, ry: 35},  // Top right shine
+        {x: 200, y: 210, rx: 20, ry: 30}   // Center shine
+    ];
+
+    shineSpots.forEach(spot => {
+        const shine = createSVGElement('ellipse', {
+            cx: spot.x,
+            cy: spot.y,
+            rx: spot.rx,
+            ry: spot.ry,
+            fill: 'white',
+            opacity: '0.35',  // MONSTER HIGH: Prominent glossy effect
+            filter: 'url(#softGlow)'
+        });
+        hairGroup.appendChild(shine);
+    });
+
+    // ENHANCED: Add highlight strands for shine and dimension
+    const highlightCount = Math.floor(8 * texture.volume);
+    for (let i = 0; i < highlightCount; i++) {
+        const angle = (i / highlightCount) * Math.PI * 2;
+        const distance = volume * 0.5;  // Closer to center than texture circles
+        const x = 200 + Math.cos(angle) * distance;
+        const y = 200 + Math.sin(angle) * distance;
+
+        const highlight = createSVGElement('ellipse', {
+            cx: x,
+            cy: y,
+            rx: 8,
+            ry: 18,
+            fill: lightColor,
+            opacity: '0.25',
+            transform: `rotate(${angle * 180 / Math.PI} ${x} ${y})`  // Rotate to follow hair direction
+        });
+        hairGroup.appendChild(highlight);
+    }
+
+    // MONSTER HIGH STYLE: Add subtle sparkles to hair
+    const sparkleCount = Math.floor(12 * texture.volume / 1.3);
+    for (let i = 0; i < sparkleCount; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const distance = volume * (0.3 + Math.random() * 0.5);
+        const x = 200 + Math.cos(angle) * distance;
+        const y = 200 + Math.sin(angle) * distance;
+
+        const sparkle = createSVGElement('circle', {
+            cx: x,
+            cy: y,
+            r: 2 + Math.random() * 2,
+            fill: 'white',
+            opacity: 0.6 + Math.random() * 0.3
+        });
+        hairGroup.appendChild(sparkle);
     }
 }
 
@@ -212,12 +328,15 @@ function renderWashAndGo(hairGroup, state, texture) {
 
 /**
  * Renders box braids - a protective style with individual braids
+ * ENHANCED: Now with gradients, highlights, and depth
+ * MONSTER HIGH STYLE: Bold outlines and glossy shine on braids
  *
  * How it works:
  * 1. Creates 12 vertical braids across the head
  * 2. Each braid has 6 segments stacked vertically
  * 3. Segments alternate slight left/right offset to show braid texture
- * 4. Top ellipse covers the scalp where braids originate
+ * 4. Adds highlights and shadows for realistic depth
+ * 5. Top ellipse covers the scalp where braids originate
  *
  * SVG positioning:
  * - Braids spaced 20px apart horizontally
@@ -231,6 +350,38 @@ function renderBoxBraids(hairGroup, state) {
     const braidCount = 12;      // Number of individual braids
     const braidWidth = 8;       // Width of each braid in pixels
     const startY = 200;         // Y position where braids start (below scalp)
+
+    // ENHANCED: Get defs and create gradient
+    const svg = hairGroup.ownerSVGElement;
+    const defs = svg.querySelector('defs');
+
+    // MONSTER HIGH: Boost hair color saturation
+    const vibrantColor = boostSaturation(state.hair.color, 35);
+
+    const braidGradient = createSVGElement('linearGradient', {
+        id: 'braidGradient',
+        x1: '0%',
+        y1: '0%',
+        x2: '100%',
+        y2: '0%'
+    });
+
+    const lightColor = lightenColor(vibrantColor, 25);  // MONSTER HIGH: Brighter highlights
+    const darkColor = darkenColor(vibrantColor, 15);
+
+    braidGradient.appendChild(createSVGElement('stop', {
+        offset: '0%',
+        'stop-color': darkColor
+    }));
+    braidGradient.appendChild(createSVGElement('stop', {
+        offset: '50%',
+        'stop-color': vibrantColor
+    }));
+    braidGradient.appendChild(createSVGElement('stop', {
+        offset: '100%',
+        'stop-color': lightColor
+    }));
+    defs.appendChild(braidGradient);
 
     // Create each individual braid
     for (let i = 0; i < braidCount; i++) {
@@ -247,29 +398,97 @@ function renderBoxBraids(hairGroup, state) {
             // Even segments (j=0,2,4): offset 0, Odd segments (j=1,3,5): offset 3px right
             const offset = (j % 2) * 3;
 
-            // Create rectangular segment with rounded corners
+            // ENHANCED: Add shadow behind each segment for depth
+            const shadow = createSVGElement('rect', {
+                x: x - braidWidth / 2 + offset + 1,
+                y: y + 2,
+                width: braidWidth,
+                height: 28,
+                fill: 'black',
+                opacity: '0.15',
+                rx: '3'
+            });
+            hairGroup.appendChild(shadow);
+
+            // Create rectangular segment with gradient
             const segment = createSVGElement('rect', {
                 x: x - braidWidth / 2 + offset,     // Center on x, add offset
                 y: y,
                 width: braidWidth,
                 height: 28,                         // Slightly shorter than spacing for gap
-                fill: state.hair.color,
-                rx: '3'                             // Rounded corners (3px radius)
+                fill: 'url(#braidGradient)',        // ENHANCED: Use gradient
+                rx: '3',                            // Rounded corners (3px radius)
+                stroke: '#000000',                  // MONSTER HIGH: Bold black outline
+                'stroke-width': '2'                 // MONSTER HIGH: 2px outline
             });
             hairGroup.appendChild(segment);
+
+            // MONSTER HIGH: Add BIGGER glossy highlight on braid
+            const highlight = createSVGElement('rect', {
+                x: x - braidWidth / 2 + offset + braidWidth * 0.6,
+                y: y + 3,
+                width: braidWidth * 0.3,  // MONSTER HIGH: Wider shine
+                height: 22,                // MONSTER HIGH: Taller shine
+                fill: 'white',
+                opacity: '0.6',            // MONSTER HIGH: More prominent
+                rx: '1'
+            });
+            hairGroup.appendChild(highlight);
         }
     }
 
-    // Add scalp coverage - ellipse at top where braids originate
-    // This creates a natural hairline and covers braid starting points
+    // ENHANCED: Add shadow at roots for depth
+    const rootShadow = createSVGElement('ellipse', {
+        cx: '200',
+        cy: '195',
+        rx: '102',
+        ry: '62',
+        fill: 'black',
+        opacity: '0.15'
+    });
+    hairGroup.appendChild(rootShadow);
+
+    // Add scalp coverage with gradient
+    const scalpGradient = createSVGElement('radialGradient', {
+        id: 'scalpGradient',
+        cx: '40%',
+        cy: '30%'
+    });
+    scalpGradient.appendChild(createSVGElement('stop', {
+        offset: '0%',
+        'stop-color': lightenColor(state.hair.color, 15)
+    }));
+    scalpGradient.appendChild(createSVGElement('stop', {
+        offset: '100%',
+        'stop-color': state.hair.color
+    }));
+    defs.appendChild(scalpGradient);
+
     const top = createSVGElement('ellipse', {
         cx: '200',      // Centered on head
         cy: '190',      // Just above braid start (y=200)
         rx: '100',      // Wide enough to cover all braid origins
         ry: '60',       // Moderate height for natural scalp coverage
-        fill: state.hair.color
+        fill: 'url(#scalpGradient)',  // ENHANCED: Use gradient
+        stroke: '#000000',             // MONSTER HIGH: Bold black outline
+        'stroke-width': '3',           // MONSTER HIGH: 3px outline
+        filter: 'url(#dropShadow)'    // ENHANCED: Add shadow
     });
     hairGroup.appendChild(top);
+
+    // MONSTER HIGH: Add sparkles to braids for that magical touch
+    for (let i = 0; i < 15; i++) {
+        const x = 90 + Math.random() * 220;  // Random x across braids
+        const y = 200 + Math.random() * 180; // Random y along braids
+        const sparkle = createSVGElement('circle', {
+            cx: x,
+            cy: y,
+            r: 1.5 + Math.random() * 1.5,
+            fill: 'white',
+            opacity: 0.6 + Math.random() * 0.3
+        });
+        hairGroup.appendChild(sparkle);
+    }
 }
 
 /**

@@ -10,12 +10,22 @@
 }
 
 /* Body: Full viewport with gradient background */
+/* MONSTER HIGH STYLE: More vibrant saturated gradient */
 body {
     /* Fun, rounded font that appeals to target audience */
     font-family: 'Comic Sans MS', 'Arial Rounded MT Bold', cursive, sans-serif;
-    /* Vibrant gradient background - pink to purple spectrum */
-    background: linear-gradient(135deg, #FF6B9D 0%, #C06C84 50%, #6C5B7B 100%);
+    /* MONSTER HIGH: More vibrant gradient background - pink to purple spectrum */
+    background: linear-gradient(135deg, #FF1493 0%, #FF69B4 25%, #FF1493 50%, #C71585 75%, #8B008B 100%);
+    background-size: 200% 200%;
+    animation: gradientShift 15s ease infinite; /* MONSTER HIGH: Animated gradient */
     min-height: 100vh; /* Ensure full viewport height even with little content */
+}
+
+/* MONSTER HIGH STYLE: Animated gradient background */
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
 /* ====================================
@@ -56,14 +66,15 @@ header h1 {
 }
 
 /* Save Character button - positioned in top right of header */
+/* ENHANCED: Better shadows, glow, and scale effects */
 .save-character-btn {
     position: absolute;
     right: 20px;
     top: 50%;
     transform: translateY(-50%); /* Center vertically relative to header */
     padding: 12px 24px;
-    /* Eye-catching gold gradient */
-    background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+    /* ENHANCED: More vibrant gold gradient with stops */
+    background: linear-gradient(135deg, #FFD700 0%, #FFC107 50%, #FFA500 100%);
     color: white;
     border: none;
     border-radius: 25px; /* Fully rounded button */
@@ -71,14 +82,25 @@ header h1 {
     font-size: 1.1em;
     font-weight: bold;
     cursor: pointer;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    transition: all 0.3s ease; /* Smooth hover animation */
+    /* ENHANCED: Deeper shadow with multiple layers */
+    box-shadow: 0 6px 20px rgba(255, 165, 0, 0.4),
+                0 3px 8px rgba(0,0,0,0.3);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* ENHANCED: Better easing */
 }
 
-/* Save button hover effect - lifts up slightly */
+/* ENHANCED: Save button hover effect - lifts up with glow */
 .save-character-btn:hover {
-    transform: translateY(-50%) translateY(-3px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+    transform: translateY(-50%) translateY(-5px) scale(1.05); /* ENHANCED: Added scale */
+    /* ENHANCED: Larger glow effect on hover */
+    box-shadow: 0 10px 30px rgba(255, 215, 0, 0.6),
+                0 6px 15px rgba(255, 165, 0, 0.4),
+                0 0 20px rgba(255, 215, 0, 0.3);
+}
+
+/* ENHANCED: Active state for button press */
+.save-character-btn:active {
+    transform: translateY(-50%) translateY(-2px) scale(1.02);
+    box-shadow: 0 4px 12px rgba(255, 165, 0, 0.4);
 }
 
 /* ====================================
@@ -86,6 +108,7 @@ header h1 {
    ==================================== */
 
 /* Three-column grid layout: Activity Menu | Character Display | Tool Panel */
+/* ENHANCED: Better shadows and depth */
 .main-content {
     display: grid;
     grid-template-columns: 250px 1fr 300px; /* Fixed sidebars, flexible center */
@@ -93,7 +116,10 @@ header h1 {
     background: white;
     border-radius: 30px;
     padding: 30px;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.3); /* Deep shadow for depth */
+    /* ENHANCED: Multiple shadow layers for realistic depth */
+    box-shadow: 0 25px 70px rgba(0,0,0,0.3),
+                0 15px 40px rgba(0,0,0,0.2),
+                0 5px 15px rgba(0,0,0,0.15);
     min-height: 700px; /* Ensure consistent height */
 }
 
@@ -101,10 +127,14 @@ header h1 {
    LEFT SIDEBAR: ACTIVITY MENU
    ==================================== */
 
+/* ENHANCED: Activity menu with better shadows and depth */
 .activity-menu {
     background: #f8f9fa; /* Light gray background */
     border-radius: 20px;
     padding: 20px;
+    /* ENHANCED: Subtle inner shadow for depth */
+    box-shadow: inset 0 2px 8px rgba(0,0,0,0.05),
+                0 2px 8px rgba(0,0,0,0.08);
 }
 
 /* Activity menu heading */
@@ -122,6 +152,7 @@ header h1 {
 }
 
 /* Individual activity button styling */
+/* ENHANCED: Better shadows and hover effects */
 .activity-btn {
     display: flex;
     align-items: center; /* Vertically center icon and text */
@@ -131,26 +162,36 @@ header h1 {
     border: 3px solid #ddd; /* Light gray border */
     border-radius: 15px; /* Rounded corners */
     cursor: pointer;
-    transition: all 0.3s ease; /* Smooth animation for all changes */
+    /* ENHANCED: Better easing and properties */
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     font-family: inherit;
     font-size: 1em;
     text-align: left;
+    /* ENHANCED: Add subtle shadow by default */
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
 }
 
-/* Activity button hover effect - slides right and highlights */
+/* ENHANCED: Activity button hover effect - slides right with scale and glow */
 .activity-btn:hover {
-    transform: translateX(5px); /* Slide slightly to the right */
+    transform: translateX(8px) scale(1.02); /* ENHANCED: Slide further and scale */
     border-color: #FF6B9D; /* Change border to pink theme color */
-    box-shadow: 0 3px 10px rgba(255, 107, 157, 0.3); /* Add pink shadow */
+    /* ENHANCED: Larger pink glow on hover */
+    box-shadow: 0 6px 20px rgba(255, 107, 157, 0.4),
+                0 3px 10px rgba(255, 107, 157, 0.2);
+    background: linear-gradient(135deg, white 0%, #FFF0F5 100%); /* ENHANCED: Subtle gradient */
 }
 
 /* Active state - button for currently selected activity */
+/* ENHANCED: Better gradient and glow */
 .activity-btn.active {
-    /* Gradient background matching the page theme */
-    background: linear-gradient(135deg, #FF6B9D 0%, #C06C84 100%);
+    /* ENHANCED: More vibrant gradient with extra stop */
+    background: linear-gradient(135deg, #FF6B9D 0%, #E75A8A 50%, #C06C84 100%);
     color: white; /* White text for contrast */
     border-color: #FF6B9D;
-    transform: translateX(5px); /* Stay in the "slid" position */
+    transform: translateX(8px) scale(1.02); /* Stay in the "slid" position with scale */
+    /* ENHANCED: Permanent glow for active state */
+    box-shadow: 0 6px 20px rgba(255, 107, 157, 0.5),
+                0 3px 10px rgba(192, 108, 132, 0.3);
 }
 
 /* Activity icon styling (emoji) */
@@ -172,33 +213,100 @@ header h1 {
    CENTER: CHARACTER DISPLAY
    ==================================== */
 
+/* ENHANCED: Character display with better depth and lighting */
+/* MONSTER HIGH STYLE: More vibrant background with sparkle overlay */
 .character-display {
     display: flex;
     justify-content: center;
     align-items: center;
-    /* Gradient background creates a sky/scene effect */
-    background: linear-gradient(135deg, #FFD89B 0%, #19547B 100%);
+    position: relative; /* MONSTER HIGH: For sparkle overlay positioning */
+    /* MONSTER HIGH: More vibrant gradient background */
+    background: linear-gradient(135deg, #FFD700 0%, #FFA500 20%, #FF69B4 40%, #87CEEB 60%, #9370DB 80%, #4169E1 100%);
+    background-size: 200% 200%;
+    animation: gradientShift 10s ease infinite; /* MONSTER HIGH: Animated background */
     border-radius: 20px;
     padding: 20px;
+    /* ENHANCED: Inner shadow for depth */
+    box-shadow: inset 0 4px 12px rgba(0,0,0,0.15),
+                0 4px 12px rgba(0,0,0,0.1);
+    overflow: hidden; /* MONSTER HIGH: Contain sparkle effects */
+}
+
+/* MONSTER HIGH STYLE: Sparkle overlay on character display */
+.character-display::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image:
+        radial-gradient(circle, white 1px, transparent 1px),
+        radial-gradient(circle, white 1px, transparent 1px);
+    background-size: 50px 50px, 80px 80px;
+    background-position: 0 0, 40px 40px;
+    opacity: 0.3;
+    animation: sparkleMove 20s linear infinite;
+    pointer-events: none; /* Don't block interactions */
+}
+
+/* MONSTER HIGH STYLE: Moving sparkle animation */
+@keyframes sparkleMove {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(50px, 50px); }
 }
 
 /* SVG character canvas */
+/* ENHANCED: Better shadow and subtle border */
+/* MONSTER HIGH STYLE: Glossy shine effect */
 #character {
     background: white; /* White background so character shows clearly */
     border-radius: 15px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    /* ENHANCED: Multiple shadow layers for depth */
+    box-shadow: 0 8px 25px rgba(0,0,0,0.25),
+                0 4px 12px rgba(0,0,0,0.15),
+                0 0 0 1px rgba(0,0,0,0.05); /* Subtle border */
+    position: relative; /* MONSTER HIGH: For shine effect */
+    overflow: hidden;
+}
+
+/* MONSTER HIGH STYLE: Glossy shine sweep across character */
+#character::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 50%;
+    height: 200%;
+    background: linear-gradient(90deg,
+        transparent,
+        rgba(255, 255, 255, 0.3) 50%,
+        transparent);
+    transform: rotate(25deg);
+    animation: shineSwipe 4s ease-in-out infinite;
+}
+
+/* MONSTER HIGH STYLE: Shine swipe animation */
+@keyframes shineSwipe {
+    0% { left: -50%; }
+    20% { left: 150%; }
+    100% { left: 150%; }
 }
 
 /* ====================================
    RIGHT SIDEBAR: TOOL PANEL
    ==================================== */
 
+/* ENHANCED: Tool panel with better depth */
 .tool-panel {
     background: #f8f9fa;
     border-radius: 20px;
     padding: 20px;
     overflow-y: auto; /* Scroll if content is too tall */
     max-height: 700px;
+    /* ENHANCED: Subtle shadows for depth */
+    box-shadow: inset 0 2px 8px rgba(0,0,0,0.05),
+                0 2px 8px rgba(0,0,0,0.08);
 }
 
 /* Tool panel title */
@@ -213,12 +321,22 @@ header h1 {
    ==================================== */
 
 /* Customization section wrapper - groups related options together */
+/* ENHANCED: Better shadows and depth */
 .customization-section {
     margin-bottom: 25px;
     padding: 15px;
     background: white;
     border-radius: 15px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1); /* Subtle depth */
+    /* ENHANCED: Multiple shadow layers for depth */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12),
+                0 2px 6px rgba(0,0,0,0.08);
+    transition: box-shadow 0.3s ease; /* ENHANCED: Smooth shadow transition */
+}
+
+/* ENHANCED: Hover effect for sections */
+.customization-section:hover {
+    box-shadow: 0 6px 18px rgba(0,0,0,0.15),
+                0 3px 8px rgba(0,0,0,0.1);
 }
 
 /* Section headings (e.g., "Skin Tone", "Hair Texture") */
@@ -237,27 +355,54 @@ header h1 {
 }
 
 /* Individual color button - circular color swatch */
+/* ENHANCED: Better shadows and scale effects */
 .color-btn {
     width: 100%; /* Fill grid cell */
     aspect-ratio: 1; /* Keep buttons perfectly square (then border-radius makes circles) */
     border: 3px solid white; /* White border for unselected state */
     border-radius: 50%; /* Make it a circle */
     cursor: pointer;
-    transition: all 0.3s ease; /* Smooth hover and selection animation */
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2); /* Subtle shadow adds depth */
+    /* ENHANCED: Better easing curve */
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    /* ENHANCED: Multiple shadow layers */
+    box-shadow: 0 3px 10px rgba(0,0,0,0.2),
+                0 1px 4px rgba(0,0,0,0.15);
 }
 
-/* Color button hover effect - grows slightly larger */
+/* ENHANCED: Color button hover effect - grows with glow */
 .color-btn:hover {
-    transform: scale(1.1); /* Grow by 10% */
-    box-shadow: 0 4px 12px rgba(0,0,0,0.3); /* Deeper shadow on hover */
+    transform: scale(1.15); /* ENHANCED: Grow more */
+    /* ENHANCED: Larger shadow with glow */
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3),
+                0 3px 10px rgba(0,0,0,0.2),
+                0 0 0 3px rgba(255, 107, 157, 0.2); /* Pink glow ring */
 }
 
 /* Active color button - shows current selection */
+/* ENHANCED: Better glow and animation */
 .color-btn.active {
     border-color: #FF6B9D; /* Pink border indicates selection */
     border-width: 4px; /* Thicker border stands out more */
-    transform: scale(1.15); /* Slightly larger than hover state */
+    transform: scale(1.2); /* ENHANCED: Even larger */
+    /* ENHANCED: Permanent pink glow for active state */
+    box-shadow: 0 6px 20px rgba(255, 107, 157, 0.5),
+                0 3px 10px rgba(255, 107, 157, 0.3),
+                0 0 0 4px rgba(255, 107, 157, 0.3);
+    animation: pulseGlow 2s ease-in-out infinite; /* ENHANCED: Subtle pulse */
+}
+
+/* ENHANCED: Pulse animation for active buttons */
+@keyframes pulseGlow {
+    0%, 100% {
+        box-shadow: 0 6px 20px rgba(255, 107, 157, 0.5),
+                    0 3px 10px rgba(255, 107, 157, 0.3),
+                    0 0 0 4px rgba(255, 107, 157, 0.3);
+    }
+    50% {
+        box-shadow: 0 8px 25px rgba(255, 107, 157, 0.6),
+                    0 4px 12px rgba(255, 107, 157, 0.4),
+                    0 0 0 5px rgba(255, 107, 157, 0.4);
+    }
 }
 
 /* Option grid layout - used for text-based options like hair texture */
@@ -269,6 +414,7 @@ header h1 {
 }
 
 /* Text-based option button (e.g., "Type 4C", "Type 3B") */
+/* ENHANCED: Better shadows and transitions */
 .option-btn {
     padding: 12px;
     background: white;
@@ -278,20 +424,29 @@ header h1 {
     font-family: inherit;
     font-size: 0.9em;
     font-weight: bold;
-    transition: all 0.3s ease; /* Smooth animation */
+    /* ENHANCED: Better easing */
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    /* ENHANCED: Add subtle shadow */
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
 }
 
-/* Option button hover effect */
+/* ENHANCED: Option button hover effect with scale */
 .option-btn:hover {
-    background: #f0f0f0; /* Slight gray background */
+    background: linear-gradient(135deg, #f8f9fa 0%, #f0f0f0 100%); /* ENHANCED: Gradient */
     border-color: #FF6B9D; /* Pink border on hover */
+    transform: translateY(-2px) scale(1.02); /* ENHANCED: Lift and scale */
+    box-shadow: 0 4px 12px rgba(255, 107, 157, 0.25);
 }
 
 /* Active option button - shows current selection */
+/* ENHANCED: Better gradient and glow */
 .option-btn.active {
-    background: #FF6B9D; /* Full pink background */
+    background: linear-gradient(135deg, #FF6B9D 0%, #E75A8A 50%, #C06C84 100%); /* ENHANCED: Gradient */
     color: white; /* White text for contrast */
     border-color: #FF6B9D;
+    transform: scale(1.05); /* ENHANCED: Slightly larger */
+    box-shadow: 0 4px 12px rgba(255, 107, 157, 0.4),
+                0 2px 6px rgba(192, 108, 132, 0.3);
 }
 
 /* ====================================
@@ -460,24 +615,42 @@ header h1 {
 
 /* Sparkle effect - animated emoji that appears at click location */
 /* Provides immediate visual feedback for each click */
+/* MONSTER HIGH STYLE: Enhanced sparkle effects */
 .sparkle {
     position: fixed; /* Position relative to viewport, not parent */
-    font-size: 2em; /* Large sparkle is more visible */
+    font-size: 2.5em; /* MONSTER HIGH: Even larger sparkles */
     pointer-events: none; /* Don't block clicks or interfere with interactions */
-    animation: sparkleFloat 1s ease-out forwards; /* Run animation once */
+    animation: sparkleFloat 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards; /* MONSTER HIGH: Smoother easing */
     z-index: 1000; /* Appear above all other content */
+    filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.8)); /* MONSTER HIGH: Glowing sparkles */
 }
 
 /* Sparkle animation - floats up and fades out */
 /* Creates a magical, satisfying effect for each click */
+/* MONSTER HIGH STYLE: More dramatic float with rotation */
 @keyframes sparkleFloat {
     0% {
-        transform: translateY(0) scale(1); /* Start at click position, normal size */
+        transform: translateY(0) scale(1) rotate(0deg); /* Start at click position */
         opacity: 1; /* Fully visible */
     }
+    50% {
+        transform: translateY(-30px) scale(1.3) rotate(180deg); /* MONSTER HIGH: Grow mid-flight */
+    }
     100% {
-        transform: translateY(-50px) scale(0.5); /* Float up 50px, shrink to half size */
+        transform: translateY(-80px) scale(0.3) rotate(360deg); /* MONSTER HIGH: Float higher with spin */
         opacity: 0; /* Fade to invisible */
+    }
+}
+
+/* MONSTER HIGH STYLE: Add floating sparkles animation for UI elements */
+@keyframes floatSparkle {
+    0%, 100% {
+        transform: translateY(0px) rotate(0deg);
+        opacity: 0.7;
+    }
+    50% {
+        transform: translateY(-10px) rotate(180deg);
+        opacity: 1;
     }
 }
 
@@ -641,4 +814,70 @@ header h1 {
         transform: translateX(-50%) translateY(0); /* End at final position */
         opacity: 1; /* End fully visible */
     }
+}
+
+/* ====================================
+   MONSTER HIGH STYLE: GLOBAL SPARKLE DECORATIONS
+   ==================================== */
+
+/* Add sparkle decoration to active buttons */
+.activity-btn.active::after,
+.option-btn.active::after {
+    content: '✨';
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.2em;
+    animation: floatSparkle 2s ease-in-out infinite;
+}
+
+.activity-btn,
+.option-btn,
+.style-card,
+.outfit-btn {
+    position: relative; /* For sparkle positioning */
+}
+
+/* MONSTER HIGH STYLE: Glossy gradient overlay on buttons */
+.activity-btn::before,
+.option-btn::before,
+.style-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50%;
+    background: linear-gradient(180deg,
+        rgba(255, 255, 255, 0.4) 0%,
+        rgba(255, 255, 255, 0.1) 50%,
+        transparent 100%);
+    border-radius: inherit;
+    pointer-events: none;
+}
+
+/* MONSTER HIGH STYLE: Add subtle shine animation to color buttons */
+.color-btn {
+    animation: subtleShine 3s ease-in-out infinite;
+}
+
+@keyframes subtleShine {
+    0%, 100% {
+        filter: brightness(1) saturate(1);
+    }
+    50% {
+        filter: brightness(1.1) saturate(1.2);
+    }
+}
+
+/* MONSTER HIGH STYLE: Rainbow shimmer on hover for outfit buttons */
+.outfit-btn:hover {
+    animation: rainbowShimmer 1s ease-in-out infinite;
+}
+
+@keyframes rainbowShimmer {
+    0% { filter: hue-rotate(0deg) brightness(1); }
+    50% { filter: hue-rotate(20deg) brightness(1.2); }
+    100% { filter: hue-rotate(0deg) brightness(1); }
 }
