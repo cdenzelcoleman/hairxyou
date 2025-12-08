@@ -321,11 +321,10 @@ function boostSaturation(color, percent) {
 
 /**
  * Renders the body (torso) of the character.
- * ENHANCED: Now with gradient shading for depth and realistic lighting
- * MONSTER HIGH STYLE: Bold black outline for that cartoon/anime look
+ * CHIBI STYLE: Small, rounded body for cute proportions
  *
- * Position: Center of canvas (x=200, y=420)
- * Size: rx=70 (width), ry=80 (height) - more proportionate to head
+ * Position: Center of canvas (x=200, y=450)
+ * Size: Smaller body to emphasize big head (chibi style)
  */
 function renderBody(svg, state) {
     const defs = svg.querySelector('defs');
@@ -333,15 +332,16 @@ function renderBody(svg, state) {
     // Create gradient for body with lighting
     createSkinGradient(defs, 'bodyGradient', state.appearance.skinTone);
 
+    // CHIBI BODY: Small, round, cute torso
     const body = createSVGElement('ellipse', {
-        cx: '200',      // Horizontal center of 400px canvas
-        cy: '420',      // Between head and legs
-        rx: '70',       // Width radius - proportionate body
-        ry: '80',       // Height radius - shorter torso
-        fill: 'url(#bodyGradient)',  // ENHANCED: Use gradient instead of flat color
-        stroke: '#000000',           // MONSTER HIGH: Bold black outline
-        'stroke-width': '4',         // MONSTER HIGH: 4px thick outline
-        filter: 'url(#dropShadow)',  // ENHANCED: Add drop shadow for depth
+        cx: '200',      // Horizontal center
+        cy: '450',      // Below head
+        rx: '60',       // Smaller, rounder body
+        ry: '70',       // Compact torso
+        fill: 'url(#bodyGradient)',
+        stroke: '#000000',
+        'stroke-width': '4',
+        filter: 'url(#dropShadow)',
         id: 'body'
     });
     svg.appendChild(body);
@@ -365,10 +365,10 @@ function renderArms(svg, state) {
     // Create gradient for arms using skin tone
     createSkinGradient(defs, 'armGradient', state.appearance.skinTone);
 
-    // LEFT ARM - Simple continuous arm shape
+    // CHIBI LEFT ARM - Short, stubby, cute arm
     const leftArmPath = createSVGElement('path', {
-        d: 'M 130 380 Q 120 450 115 495 L 125 500 Q 125 450 135 380 Z',
-        // Creates smooth arm from shoulder to hand
+        d: 'M 135 450 Q 115 490 105 525 L 120 530 Q 125 495 145 455 Z',
+        // Short stubby arm for chibi proportions
         fill: 'url(#armGradient)',
         stroke: '#000000',
         'stroke-width': '3',
@@ -376,12 +376,12 @@ function renderArms(svg, state) {
     });
     svg.appendChild(leftArmPath);
 
-    // Left hand - simple rounded hand shape
+    // CHIBI Left hand - round, chubby hand
     const leftHand = createSVGElement('ellipse', {
-        cx: '120',      // Center of hand
-        cy: '510',      // Below arm
-        rx: '18',       // Hand width
-        ry: '22',       // Hand height
+        cx: '112',      // Center of hand
+        cy: '540',      // Below arm
+        rx: '20',       // Chubby hand width
+        ry: '24',       // Round hand height
         fill: 'url(#armGradient)',
         stroke: '#000000',
         'stroke-width': '3',
@@ -389,10 +389,10 @@ function renderArms(svg, state) {
     });
     svg.appendChild(leftHand);
 
-    // RIGHT ARM - Simple continuous arm shape
+    // CHIBI RIGHT ARM - Short, stubby, cute arm
     const rightArmPath = createSVGElement('path', {
-        d: 'M 270 380 Q 280 450 285 495 L 275 500 Q 275 450 265 380 Z',
-        // Creates smooth arm from shoulder to hand
+        d: 'M 265 450 Q 285 490 295 525 L 280 530 Q 275 495 255 455 Z',
+        // Short stubby arm for chibi proportions
         fill: 'url(#armGradient)',
         stroke: '#000000',
         'stroke-width': '3',
@@ -400,12 +400,12 @@ function renderArms(svg, state) {
     });
     svg.appendChild(rightArmPath);
 
-    // Right hand - simple rounded hand shape
+    // CHIBI Right hand - round, chubby hand
     const rightHand = createSVGElement('ellipse', {
-        cx: '280',      // Center of hand
-        cy: '510',      // Below arm
-        rx: '18',       // Hand width
-        ry: '22',       // Hand height
+        cx: '288',      // Center of hand
+        cy: '540',      // Below arm
+        rx: '20',       // Chubby hand width
+        ry: '24',       // Round hand height
         fill: 'url(#armGradient)',
         stroke: '#000000',
         'stroke-width': '3',
@@ -431,10 +431,10 @@ function renderLegs(svg, state) {
     // Create gradient for legs using skin tone
     createSkinGradient(defs, 'legGradient', state.appearance.skinTone);
 
-    // LEFT LEG - Simple continuous leg shape
+    // CHIBI LEFT LEG - Short, stubby, cute leg
     const leftLegPath = createSVGElement('path', {
-        d: 'M 175 500 L 175 670 L 195 670 L 195 500 Z',
-        // Creates simple straight leg
+        d: 'M 170 520 L 168 620 L 192 620 L 190 520 Z',
+        // Short stubby leg for chibi proportions
         fill: 'url(#legGradient)',
         stroke: '#000000',
         'stroke-width': '3',
@@ -442,12 +442,12 @@ function renderLegs(svg, state) {
     });
     svg.appendChild(leftLegPath);
 
-    // Left foot - simple rounded foot shape
+    // CHIBI Left foot - round, chubby foot
     const leftFoot = createSVGElement('ellipse', {
-        cx: '185',      // Center of foot
-        cy: '682',      // Below leg
-        rx: '25',       // Foot length
-        ry: '12',       // Foot height
+        cx: '180',      // Center of foot
+        cy: '635',      // Below short leg
+        rx: '28',       // Chubby foot length
+        ry: '15',       // Round foot height
         fill: 'url(#legGradient)',
         stroke: '#000000',
         'stroke-width': '3',
@@ -455,10 +455,10 @@ function renderLegs(svg, state) {
     });
     svg.appendChild(leftFoot);
 
-    // RIGHT LEG - Simple continuous leg shape
+    // CHIBI RIGHT LEG - Short, stubby, cute leg
     const rightLegPath = createSVGElement('path', {
-        d: 'M 205 500 L 205 670 L 225 670 L 225 500 Z',
-        // Creates simple straight leg
+        d: 'M 210 520 L 208 620 L 232 620 L 230 520 Z',
+        // Short stubby leg for chibi proportions
         fill: 'url(#legGradient)',
         stroke: '#000000',
         'stroke-width': '3',
@@ -466,12 +466,12 @@ function renderLegs(svg, state) {
     });
     svg.appendChild(rightLegPath);
 
-    // Right foot - simple rounded foot shape
+    // CHIBI Right foot - round, chubby foot
     const rightFoot = createSVGElement('ellipse', {
-        cx: '215',      // Center of foot
-        cy: '682',      // Below leg
-        rx: '25',       // Foot length
-        ry: '12',       // Foot height
+        cx: '220',      // Center of foot
+        cy: '635',      // Below short leg
+        rx: '28',       // Chubby foot length
+        ry: '15',       // Round foot height
         fill: 'url(#legGradient)',
         stroke: '#000000',
         'stroke-width': '3',
@@ -482,10 +482,9 @@ function renderLegs(svg, state) {
 
 /**
  * Renders the neck connecting head to body.
- * ENHANCED: Now with gradient shading for depth
- * MONSTER HIGH STYLE: Bold black outline
+ * CHIBI STYLE: Short, cute neck
  *
- * Position: x=180, y=360 (between head at ~280 and body at ~480)
+ * Position: Between head and body
  */
 function renderNeck(svg, state) {
     const defs = svg.querySelector('defs');
@@ -493,14 +492,15 @@ function renderNeck(svg, state) {
     // Create gradient for neck
     createSkinGradient(defs, 'neckGradient', state.appearance.skinTone);
 
+    // CHIBI NECK: Short and cute
     const neck = createSVGElement('rect', {
-        x: '180',       // Slightly left of center (200-20)
-        y: '360',       // Between head and body vertically
-        width: '40',    // Narrow width for realistic neck
-        height: '50',   // Connects head (ends ~390) to body (starts ~380)
-        fill: 'url(#neckGradient)',  // ENHANCED: Use gradient
-        stroke: '#000000',            // MONSTER HIGH: Bold black outline
-        'stroke-width': '3',          // MONSTER HIGH: 3px outline
+        x: '175',       // Centered
+        y: '410',       // Between head (ends ~450) and body (starts ~380)
+        width: '50',    // Wider for chibi proportions
+        height: '35',   // Short neck
+        fill: 'url(#neckGradient)',
+        stroke: '#000000',
+        'stroke-width': '3',
         id: 'neck'
     });
     svg.appendChild(neck);
@@ -508,11 +508,10 @@ function renderNeck(svg, state) {
 
 /**
  * Renders the head (face base) of the character.
- * ENHANCED: Now with gradient shading and subtle texture for realistic skin
- * MONSTER HIGH STYLE: Bold black outline and rounder proportions
+ * CHIBI STYLE: Large head for cute proportions (head is ~40% of body height)
  *
- * Position: Center-top of canvas (x=200, y=280)
- * Size: rx=90, ry=110 (taller than wide for natural head shape)
+ * Position: Center of canvas (x=200, y=330)
+ * Size: Big round head for chibi look
  */
 function renderHead(svg, state) {
     const defs = svg.querySelector('defs');
@@ -520,25 +519,26 @@ function renderHead(svg, state) {
     // Create gradient for head with top-down lighting
     createSkinGradient(defs, 'headGradient', state.appearance.skinTone);
 
+    // CHIBI HEAD: Large, round, prominent head
     const head = createSVGElement('ellipse', {
         cx: '200',      // Horizontal center
-        cy: '280',      // Upper portion of canvas
-        rx: '95',       // MONSTER HIGH: Slightly wider for cuter proportions
-        ry: '115',      // MONSTER HIGH: Slightly taller for rounder face
-        fill: 'url(#headGradient)',  // ENHANCED: Use gradient for depth
-        stroke: '#000000',            // MONSTER HIGH: Bold black outline
-        'stroke-width': '4',          // MONSTER HIGH: 4px thick outline
-        filter: 'url(#dropShadow)',  // ENHANCED: Add shadow for depth
+        cy: '330',      // Higher up, more prominent
+        rx: '110',      // CHIBI: Much bigger head
+        ry: '120',      // CHIBI: Round and large
+        fill: 'url(#headGradient)',
+        stroke: '#000000',
+        'stroke-width': '4',
+        filter: 'url(#dropShadow)',
         id: 'head'
     });
     svg.appendChild(head);
 
-    // ENHANCED: Add subtle rim lighting on the left side of face
+    // Add subtle rim lighting on the left side of face
     const rimLight = createSVGElement('ellipse', {
-        cx: '140',      // Left side of face
-        cy: '280',
-        rx: '15',       // Thin vertical strip
-        ry: '80',
+        cx: '130',      // Left side of face
+        cy: '330',
+        rx: '18',       // Thin vertical strip
+        ry: '90',
         fill: 'white',
         opacity: '0.15' // Very subtle highlight
     });
@@ -562,16 +562,16 @@ function renderFacialFeatures(svg, state) {
     // Positioned above eyes as subtle colored ellipses
     if (state.makeup.eyeshadow && state.makeup.eyeshadow !== 'none') {
         const leftEyeshadow = createSVGElement('ellipse', {
-            cx: '170', cy: '265',   // Above left eye
-            rx: '20', ry: '10',     // Wide and short ellipse
+            cx: '165', cy: '310',   // Above left eye (adjusted for new head position)
+            rx: '25', ry: '12',     // Larger for chibi eyes
             fill: state.makeup.eyeshadow,
-            opacity: '0.6'          // Semi-transparent for makeup effect
+            opacity: '0.6'
         });
         svg.appendChild(leftEyeshadow);
 
         const rightEyeshadow = createSVGElement('ellipse', {
-            cx: '230', cy: '265',   // Above right eye (symmetrical)
-            rx: '20', ry: '10',
+            cx: '235', cy: '310',   // Above right eye
+            rx: '25', ry: '12',
             fill: state.makeup.eyeshadow,
             opacity: '0.6'
         });
@@ -582,49 +582,49 @@ function renderFacialFeatures(svg, state) {
     // ENHANCED: Added shadows, gradients, and better depth
     // MONSTER HIGH STYLE: 40% BIGGER eyes with bold outlines and glossy shine
 
-    // Left eye shadow - creates depth under the eye
+    // CHIBI Left eye shadow - creates depth under the eye
     const leftEyeShadow = createSVGElement('ellipse', {
-        cx: '170',
-        cy: '272',
-        rx: '22',       // MONSTER HIGH: 40% bigger (16 * 1.4 = 22.4)
-        ry: '27',       // MONSTER HIGH: 40% bigger (19 * 1.4 = 26.6)
+        cx: '165',
+        cy: '327',      // Adjusted for new head position
+        rx: '28',       // CHIBI: Even bigger eyes!
+        ry: '32',
         fill: 'black',
-        opacity: '0.12' // MONSTER HIGH: Slightly darker shadow
+        opacity: '0.12'
     });
     svg.appendChild(leftEyeShadow);
 
-    // Right eye shadow
+    // CHIBI Right eye shadow
     const rightEyeShadow = createSVGElement('ellipse', {
-        cx: '230',
-        cy: '272',
-        rx: '22',       // MONSTER HIGH: 40% bigger
-        ry: '27',       // MONSTER HIGH: 40% bigger
+        cx: '235',
+        cy: '327',      // Adjusted for new head position
+        rx: '28',       // CHIBI: Even bigger eyes!
+        ry: '32',
         fill: 'black',
         opacity: '0.12'
     });
     svg.appendChild(rightEyeShadow);
 
-    // Left eye white
+    // CHIBI Left eye white - HUGE eyes for cute look
     const leftEyeWhite = createSVGElement('ellipse', {
-        cx: '170',      // Left side of face
-        cy: '270',      // Eye level
-        rx: '21',       // MONSTER HIGH: 40% bigger (15 * 1.4 = 21)
-        ry: '25',       // MONSTER HIGH: 40% bigger (18 * 1.4 = 25.2)
+        cx: '165',      // Left side of face
+        cy: '325',      // Lower on face for chibi look
+        rx: '26',       // CHIBI: HUGE eyes!
+        ry: '30',
         fill: 'white',
-        stroke: '#000000',              // MONSTER HIGH: Bold black outline
-        'stroke-width': '3'             // MONSTER HIGH: 3px outline
+        stroke: '#000000',
+        'stroke-width': '3'
     });
     svg.appendChild(leftEyeWhite);
 
-    // Right eye white
+    // CHIBI Right eye white - HUGE eyes
     const rightEyeWhite = createSVGElement('ellipse', {
-        cx: '230',      // Right side of face (60px apart for spacing)
-        cy: '270',      // Same level as left eye
-        rx: '21',       // MONSTER HIGH: 40% bigger
-        ry: '25',       // MONSTER HIGH: 40% bigger
+        cx: '235',      // Right side of face (70px apart)
+        cy: '325',      // Same level as left eye
+        rx: '26',       // CHIBI: HUGE eyes!
+        ry: '30',
         fill: 'white',
-        stroke: '#000000',              // MONSTER HIGH: Bold black outline
-        'stroke-width': '3'             // MONSTER HIGH: 3px outline
+        stroke: '#000000',
+        'stroke-width': '3'
     });
     svg.appendChild(rightEyeWhite);
 
@@ -664,7 +664,7 @@ function renderFacialFeatures(svg, state) {
 
     // Right iris
     const rightIris = createSVGElement('circle', {
-        cx: '230', cy: '272',
+        cx: '235', cy: '327',
         r: '14',        // MONSTER HIGH: Bigger iris
         fill: 'url(#irisGradient)',  // ENHANCED: Use gradient
         filter: 'url(#innerShadow)'
@@ -673,7 +673,7 @@ function renderFacialFeatures(svg, state) {
 
     // Left pupil (black center with subtle gradient)
     const leftPupil = createSVGElement('circle', {
-        cx: '170', cy: '272',
+        cx: '165', cy: '327',
         r: '7',         // MONSTER HIGH: Bigger pupil (5 * 1.4 = 7)
         fill: 'black'
     });
@@ -681,7 +681,7 @@ function renderFacialFeatures(svg, state) {
 
     // Right pupil
     const rightPupil = createSVGElement('circle', {
-        cx: '230', cy: '272',
+        cx: '235', cy: '327',
         r: '7',         // MONSTER HIGH: Bigger pupil
         fill: 'black'
     });
@@ -700,7 +700,7 @@ function renderFacialFeatures(svg, state) {
     svg.appendChild(leftHighlight);
 
     const rightHighlight = createSVGElement('ellipse', {
-        cx: '234', cy: '266',
+        cx: '239', cy: '319',
         rx: '8',        // MONSTER HIGH: HUGE oval highlight
         ry: '12',       // MONSTER HIGH: Tall oval
         fill: 'white',
@@ -734,10 +734,10 @@ function renderFacialFeatures(svg, state) {
     for(let i = 0; i < 3; i++) {
         // Left eye lashes
         const leftLash = createSVGElement('line', {
-            x1: 155 + (i * 7),  // Start x (spaced wider for bigger eyes)
-            y1: '255',          // Start y (adjusted for bigger eyes)
+            x1: 145 + (i * 7),  // Start x (spaced wider for bigger eyes)
+            y1: '305',          // Start y (adjusted for bigger eyes)
             x2: 153 + (i * 7),  // End x (slightly inward for curve)
-            y2: '248',          // End y (longer lashes)
+            y2: '298',          // End y (longer lashes)
             stroke: 'black',
             'stroke-width': '4',        // MONSTER HIGH: Thicker lashes (was 2)
             'stroke-linecap': 'round'  // Rounded ends
@@ -746,10 +746,10 @@ function renderFacialFeatures(svg, state) {
 
         // Right eye lashes (mirror of left)
         const rightLash = createSVGElement('line', {
-            x1: 238 + (i * 7),  // Starts further right
-            y1: '255',
+            x1: 228 + (i * 7),  // Starts further right
+            y1: '305',
             x2: 236 + (i * 7),
-            y2: '248',
+            y2: '298',
             stroke: 'black',
             'stroke-width': '4',        // MONSTER HIGH: Thicker lashes
             'stroke-linecap': 'round'
@@ -772,7 +772,7 @@ function renderFacialFeatures(svg, state) {
     // Nose with gradient for realistic shading
     const nose = createSVGElement('ellipse', {
         cx: '200',      // Center of face
-        cy: '300',      // Below eyes
+        cy: '350',      // Below eyes
         rx: '8',        // Small width
         ry: '12',       // Taller than wide
         fill: darkenColor(state.appearance.skinTone, 8),  // ENHANCED: Slightly darker than skin
@@ -783,7 +783,7 @@ function renderFacialFeatures(svg, state) {
     // ENHANCED: Add nose highlight for dimension
     const noseHighlight = createSVGElement('ellipse', {
         cx: '198',
-        cy: '297',
+        cy: '347',
         rx: '3',
         ry: '5',
         fill: 'white',
@@ -803,7 +803,7 @@ function renderFacialFeatures(svg, state) {
 
     // ENHANCED: Add mouth shadow underneath for depth
     const mouthShadow = createSVGElement('path', {
-        d: 'M 180 332 Q 200 347 220 332',
+        d: 'M 175 382 Q 200 397 220 332',
         stroke: 'black',
         'stroke-width': mouthWidth,
         fill: 'none',
@@ -814,7 +814,7 @@ function renderFacialFeatures(svg, state) {
 
     // Main mouth - Path creates a smile curve using quadratic bezier (Q)
     const mouth = createSVGElement('path', {
-        d: 'M 180 330 Q 200 345 220 330',  // Start 180, curve down to 345, end 220
+        d: 'M 175 380 Q 200 395 220 330',  // Start 180, curve down to 345, end 220
         stroke: mouthColor,
         'stroke-width': mouthWidth,
         fill: 'none',              // No fill, just outline
@@ -826,7 +826,7 @@ function renderFacialFeatures(svg, state) {
     // MONSTER HIGH STYLE: Always add glossy lip shine for that polished look!
     const lipShine = createSVGElement('ellipse', {
         cx: '200',
-        cy: '337',      // Center of lower lip
+        cy: '387',      // Center of lower lip
         rx: '12',       // MONSTER HIGH: Bigger shine spot
         ry: '4',        // MONSTER HIGH: Taller shine
         fill: 'url(#glossGradient)',  // MONSTER HIGH: Use gloss gradient
@@ -903,12 +903,12 @@ function renderOutfit(svg, state) {
     if (outfitData.top) {
         const topColor = outfitData.top.color;
 
-        // Main torso part of shirt/dress
+        // CHIBI shirt - covers rounded body
         const top = createSVGElement('ellipse', {
             cx: '200',      // Center on body
-            cy: '420',      // Match body position
-            rx: '75',       // Slightly larger than body
-            ry: '85',       // Cover body
+            cy: '450',      // Match chibi body position
+            rx: '65',       // Match chibi body size
+            ry: '75',       // Cover chibi body
             fill: topColor,
             stroke: '#000000',
             'stroke-width': '3',
@@ -916,18 +916,18 @@ function renderOutfit(svg, state) {
         });
         svg.appendChild(top);
 
-        // LEFT SLEEVE - short sleeve
+        // CHIBI LEFT SLEEVE - short, cute sleeve
         const leftSleeve = createSVGElement('path', {
-            d: 'M 130 380 Q 120 420 118 450 L 128 455 Q 128 420 138 380 Z',
+            d: 'M 135 450 Q 120 480 115 510 L 125 515 Q 128 485 143 455 Z',
             fill: topColor,
             stroke: '#000000',
             'stroke-width': '2'
         });
         svg.appendChild(leftSleeve);
 
-        // RIGHT SLEEVE - short sleeve
+        // CHIBI RIGHT SLEEVE - short, cute sleeve
         const rightSleeve = createSVGElement('path', {
-            d: 'M 270 380 Q 280 420 282 450 L 272 455 Q 272 420 262 380 Z',
+            d: 'M 265 450 Q 280 480 285 510 L 275 515 Q 272 485 257 455 Z',
             fill: topColor,
             stroke: '#000000',
             'stroke-width': '2'
@@ -936,9 +936,9 @@ function renderOutfit(svg, state) {
 
         // If wearing a dress, add the dress skirt part
         if (outfitData.top.id.includes('dress')) {
-            // Dress skirt - flares out from waist
+            // CHIBI Dress skirt - cute short skirt
             const dressSkirt = createSVGElement('path', {
-                d: 'M 150 500 L 130 630 L 270 630 L 250 500 Z',
+                d: 'M 155 520 L 140 610 L 260 610 L 245 520 Z',
                 // Start at waist, flare to wider bottom
                 fill: topColor,
                 stroke: '#000000',
@@ -954,10 +954,10 @@ function renderOutfit(svg, state) {
 
         // Check if it's pants or a skirt
         if (outfitData.bottom.id.includes('jeans') || outfitData.bottom.id.includes('shorts')) {
-            // PANTS - Two separate legs covering the leg shapes
+            // CHIBI PANTS - cover short legs
             // Left pant leg
             const leftPantLeg = createSVGElement('path', {
-                d: 'M 175 500 L 175 670 L 195 670 L 195 500 Z',
+                d: 'M 170 520 L 168 620 L 192 620 L 190 520 Z',
                 fill: bottomColor,
                 stroke: '#000000',
                 'stroke-width': '3'
@@ -966,16 +966,16 @@ function renderOutfit(svg, state) {
 
             // Right pant leg
             const rightPantLeg = createSVGElement('path', {
-                d: 'M 205 500 L 205 670 L 225 670 L 225 500 Z',
+                d: 'M 210 520 L 208 620 L 232 620 L 230 520 Z',
                 fill: bottomColor,
                 stroke: '#000000',
                 'stroke-width': '3'
             });
             svg.appendChild(rightPantLeg);
         } else {
-            // SKIRT - One piece covering both legs
+            // CHIBI SKIRT - cute short skirt
             const skirt = createSVGElement('path', {
-                d: 'M 170 500 L 160 620 L 240 620 L 230 500 Z',
+                d: 'M 165 520 L 155 605 L 245 605 L 235 520 Z',
                 fill: bottomColor,
                 stroke: '#000000',
                 'stroke-width': '3',
@@ -985,16 +985,16 @@ function renderOutfit(svg, state) {
         }
     }
 
-    // RENDER SHOES - always shown, covering feet completely
+    // RENDER SHOES - covering chibi feet
     if (outfitData.shoes) {
         const shoeColor = outfitData.shoes.color;
 
-        // Left shoe - covers entire foot
+        // CHIBI Left shoe - covers chubby foot
         const leftShoe = createSVGElement('ellipse', {
-            cx: '185',      // Left foot position
-            cy: '682',      // Foot level
-            rx: '28',       // Shoe length
-            ry: '14',       // Shoe height
+            cx: '180',      // Left foot position
+            cy: '635',      // Chibi foot level
+            rx: '30',       // Chubby shoe length
+            ry: '17',       // Shoe height
             fill: shoeColor,
             stroke: '#000000',
             'stroke-width': '3',
@@ -1004,22 +1004,22 @@ function renderOutfit(svg, state) {
 
         // Left shoe detail (laces/stripe)
         const leftShoeDetail = createSVGElement('ellipse', {
-            cx: '185',
-            cy: '682',
-            rx: '18',       // Inner detail
-            ry: '8',
+            cx: '180',
+            cy: '635',
+            rx: '20',       // Inner detail
+            ry: '10',
             fill: lightenColor(shoeColor, 20),
             stroke: '#000000',
             'stroke-width': '1'
         });
         svg.appendChild(leftShoeDetail);
 
-        // Right shoe - covers entire foot
+        // CHIBI Right shoe - covers chubby foot
         const rightShoe = createSVGElement('ellipse', {
-            cx: '215',      // Right foot position
-            cy: '682',      // Foot level
-            rx: '28',       // Shoe length
-            ry: '14',       // Shoe height
+            cx: '220',      // Right foot position
+            cy: '635',      // Chibi foot level
+            rx: '30',       // Chubby shoe length
+            ry: '17',       // Shoe height
             fill: shoeColor,
             stroke: '#000000',
             'stroke-width': '3',
@@ -1029,10 +1029,10 @@ function renderOutfit(svg, state) {
 
         // Right shoe detail (laces/stripe)
         const rightShoeDetail = createSVGElement('ellipse', {
-            cx: '215',
-            cy: '682',
-            rx: '18',       // Inner detail
-            ry: '8',
+            cx: '220',
+            cy: '635',
+            rx: '20',       // Inner detail
+            ry: '10',
             fill: lightenColor(shoeColor, 20),
             stroke: '#000000',
             'stroke-width': '1'
@@ -1051,12 +1051,12 @@ function renderNails(svg, state) {
     // MONSTER HIGH: Boost nail color saturation
     const nailColor = boostSaturation(state.nails.color, 40);
 
-    // Left hand nail accents - bottom of hand
+    // CHIBI Left hand nail accents - bottom of chubby hand
     const leftNails = createSVGElement('ellipse', {
-        cx: '120',
-        cy: '525',      // Bottom of hand
-        rx: '12',       // Width of nail area
-        ry: '6',        // Height of nail area
+        cx: '112',
+        cy: '557',      // Bottom of chibi hand
+        rx: '14',       // Wider nail area for chibi
+        ry: '7',        // Taller nail area
         fill: nailColor,
         stroke: '#000000',
         'stroke-width': '2',
@@ -1066,21 +1066,21 @@ function renderNails(svg, state) {
 
     // Left nail shine
     const leftNailShine = createSVGElement('ellipse', {
-        cx: '120',
-        cy: '523',
-        rx: '8',
-        ry: '3',
+        cx: '112',
+        cy: '555',
+        rx: '9',
+        ry: '4',
         fill: 'white',
         opacity: '0.6'
     });
     svg.appendChild(leftNailShine);
 
-    // Right hand nail accents - bottom of hand
+    // CHIBI Right hand nail accents - bottom of chubby hand
     const rightNails = createSVGElement('ellipse', {
-        cx: '280',
-        cy: '525',      // Bottom of hand
-        rx: '12',       // Width of nail area
-        ry: '6',        // Height of nail area
+        cx: '288',
+        cy: '557',      // Bottom of chibi hand
+        rx: '14',       // Wider nail area for chibi
+        ry: '7',        // Taller nail area
         fill: nailColor,
         stroke: '#000000',
         'stroke-width': '2',
@@ -1090,10 +1090,10 @@ function renderNails(svg, state) {
 
     // Right nail shine
     const rightNailShine = createSVGElement('ellipse', {
-        cx: '280',
-        cy: '523',
-        rx: '8',
-        ry: '3',
+        cx: '288',
+        cy: '555',
+        rx: '9',
+        ry: '4',
         fill: 'white',
         opacity: '0.6'
     });
