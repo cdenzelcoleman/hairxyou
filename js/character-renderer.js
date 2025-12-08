@@ -37,15 +37,15 @@ function renderCharacter() {
 
     // Render in correct z-order (back to front)
     // Body parts first, then details on top
-    renderBody(svg, state);
-    renderArms(svg, state);  // Arms behind outfit
-    renderLegs(svg, state);  // Legs behind outfit
     renderNeck(svg, state);
     renderHead(svg, state);
+    renderBody(svg, state);
+    renderLegs(svg, state);  // Legs behind outfit
+    renderOutfit(svg, state);  // Outfit covers body
+    renderArms(svg, state);  // Arms on top so hands show
     renderFacialFeatures(svg, state);
     renderHair(svg, state);
-    renderOutfit(svg, state);
-    renderNails(svg, state);  // Nails on top of everything
+    renderNails(svg, state);  // Nails on fingertips
 }
 
 /**
@@ -365,41 +365,23 @@ function renderArms(svg, state) {
     // Create gradient for arms using skin tone
     createSkinGradient(defs, 'armGradient', state.appearance.skinTone);
 
-    // LEFT ARM
-    // Upper arm (shoulder to elbow) - connects to shoulder
-    const leftUpperArm = createSVGElement('rect', {
-        x: '108',       // Left side of body at shoulder
-        y: '360',       // Shoulder level
-        width: '22',    // Slimmer arm
-        height: '70',   // Length to elbow
+    // LEFT ARM - Simple continuous arm shape
+    const leftArmPath = createSVGElement('path', {
+        d: 'M 130 380 Q 120 450 115 495 L 125 500 Q 125 450 135 380 Z',
+        // Creates smooth arm from shoulder to hand
         fill: 'url(#armGradient)',
         stroke: '#000000',
         'stroke-width': '3',
-        rx: '11',       // Rounded for natural arm shape
         filter: 'url(#dropShadow)'
     });
-    svg.appendChild(leftUpperArm);
+    svg.appendChild(leftArmPath);
 
-    // Lower left arm (elbow to wrist)
-    const leftLowerArm = createSVGElement('rect', {
-        x: '105',       // Slightly angled inward
-        y: '430',       // Starts where upper arm ends
-        width: '20',    // Slightly thinner than upper arm
-        height: '65',   // Length to wrist
-        fill: 'url(#armGradient)',
-        stroke: '#000000',
-        'stroke-width': '3',
-        rx: '10',
-        filter: 'url(#dropShadow)'
-    });
-    svg.appendChild(leftLowerArm);
-
-    // Left hand (palm)
+    // Left hand - simple rounded hand shape
     const leftHand = createSVGElement('ellipse', {
-        cx: '115',      // Center of wrist
-        cy: '505',      // Where lower arm ends
-        rx: '15',       // Width of palm
-        ry: '20',       // Height of palm
+        cx: '120',      // Center of hand
+        cy: '510',      // Below arm
+        rx: '18',       // Hand width
+        ry: '22',       // Hand height
         fill: 'url(#armGradient)',
         stroke: '#000000',
         'stroke-width': '3',
@@ -407,93 +389,29 @@ function renderArms(svg, state) {
     });
     svg.appendChild(leftHand);
 
-    // Left hand fingers - 5 fingers extending from palm
-    const leftFingerPositions = [
-        { x: 103, y: 521, width: 6, height: 16 },   // Pinky
-        { x: 108, y: 523, width: 6, height: 18 },   // Ring
-        { x: 113, y: 525, width: 6, height: 20 },   // Middle (longest)
-        { x: 118, y: 523, width: 6, height: 18 },   // Index
-        { x: 125, y: 515, width: 7, height: 14 }    // Thumb (shorter, angled)
-    ];
-
-    leftFingerPositions.forEach((finger, index) => {
-        const leftFinger = createSVGElement('rect', {
-            x: finger.x,
-            y: finger.y,
-            width: finger.width,
-            height: finger.height,
-            fill: 'url(#armGradient)',
-            stroke: '#000000',
-            'stroke-width': '2',
-            rx: '3'  // Rounded fingertips
-        });
-        svg.appendChild(leftFinger);
-    });
-
-    // RIGHT ARM
-    // Upper arm (shoulder to elbow) - mirror of left
-    const rightUpperArm = createSVGElement('rect', {
-        x: '270',       // Right side of body at shoulder
-        y: '360',       // Shoulder level
-        width: '22',    // Same thickness as left
-        height: '70',
+    // RIGHT ARM - Simple continuous arm shape
+    const rightArmPath = createSVGElement('path', {
+        d: 'M 270 380 Q 280 450 285 495 L 275 500 Q 275 450 265 380 Z',
+        // Creates smooth arm from shoulder to hand
         fill: 'url(#armGradient)',
         stroke: '#000000',
         'stroke-width': '3',
-        rx: '11',
         filter: 'url(#dropShadow)'
     });
-    svg.appendChild(rightUpperArm);
+    svg.appendChild(rightArmPath);
 
-    // Lower right arm
-    const rightLowerArm = createSVGElement('rect', {
-        x: '275',       // Slightly angled inward (mirror)
-        y: '430',
-        width: '20',
-        height: '65',
-        fill: 'url(#armGradient)',
-        stroke: '#000000',
-        'stroke-width': '3',
-        rx: '10',
-        filter: 'url(#dropShadow)'
-    });
-    svg.appendChild(rightLowerArm);
-
-    // Right hand (palm)
+    // Right hand - simple rounded hand shape
     const rightHand = createSVGElement('ellipse', {
-        cx: '285',      // Center of right wrist
-        cy: '505',
-        rx: '15',
-        ry: '20',
+        cx: '280',      // Center of hand
+        cy: '510',      // Below arm
+        rx: '18',       // Hand width
+        ry: '22',       // Hand height
         fill: 'url(#armGradient)',
         stroke: '#000000',
         'stroke-width': '3',
         filter: 'url(#dropShadow)'
     });
     svg.appendChild(rightHand);
-
-    // Right hand fingers - mirrored positions
-    const rightFingerPositions = [
-        { x: 268, y: 515, width: 7, height: 14 },   // Thumb (shorter, angled)
-        { x: 276, y: 523, width: 6, height: 18 },   // Index
-        { x: 281, y: 525, width: 6, height: 20 },   // Middle (longest)
-        { x: 286, y: 523, width: 6, height: 18 },   // Ring
-        { x: 291, y: 521, width: 6, height: 16 }    // Pinky
-    ];
-
-    rightFingerPositions.forEach((finger, index) => {
-        const rightFinger = createSVGElement('rect', {
-            x: finger.x,
-            y: finger.y,
-            width: finger.width,
-            height: finger.height,
-            fill: 'url(#armGradient)',
-            stroke: '#000000',
-            'stroke-width': '2',
-            rx: '3'
-        });
-        svg.appendChild(rightFinger);
-    });
 }
 
 /**
@@ -513,41 +431,23 @@ function renderLegs(svg, state) {
     // Create gradient for legs using skin tone
     createSkinGradient(defs, 'legGradient', state.appearance.skinTone);
 
-    // LEFT LEG
-    // Upper leg/thigh (hip to knee)
-    const leftUpperLeg = createSVGElement('rect', {
-        x: '168',       // Left of center
-        y: '500',       // Starts at bottom of body
-        width: '28',    // Thigh thickness
-        height: '90',   // Length to knee
+    // LEFT LEG - Simple continuous leg shape
+    const leftLegPath = createSVGElement('path', {
+        d: 'M 175 500 L 175 670 L 195 670 L 195 500 Z',
+        // Creates simple straight leg
         fill: 'url(#legGradient)',
         stroke: '#000000',
         'stroke-width': '3',
-        rx: '14',       // Rounded for natural leg shape
         filter: 'url(#dropShadow)'
     });
-    svg.appendChild(leftUpperLeg);
+    svg.appendChild(leftLegPath);
 
-    // Lower left leg/calf (knee to ankle)
-    const leftLowerLeg = createSVGElement('rect', {
-        x: '170',       // Slightly narrower
-        y: '590',       // Starts where upper leg ends
-        width: '24',    // Calf thinner than thigh
-        height: '85',   // Length to ankle
-        fill: 'url(#legGradient)',
-        stroke: '#000000',
-        'stroke-width': '3',
-        rx: '12',
-        filter: 'url(#dropShadow)'
-    });
-    svg.appendChild(leftLowerLeg);
-
-    // Left foot
+    // Left foot - simple rounded foot shape
     const leftFoot = createSVGElement('ellipse', {
-        cx: '182',      // Center of ankle
-        cy: '688',      // Below leg
-        rx: '30',       // Foot length (horizontal)
-        ry: '15',       // Foot width (vertical)
+        cx: '185',      // Center of foot
+        cy: '682',      // Below leg
+        rx: '25',       // Foot length
+        ry: '12',       // Foot height
         fill: 'url(#legGradient)',
         stroke: '#000000',
         'stroke-width': '3',
@@ -555,89 +455,29 @@ function renderLegs(svg, state) {
     });
     svg.appendChild(leftFoot);
 
-    // LEFT TOE AREA - Add 5 small toes
-    const leftToePositions = [
-        { x: 205, y: 684, r: 3.5 },   // Big toe
-        { x: 209, y: 686, r: 2.5 },
-        { x: 212, y: 688, r: 2.5 },
-        { x: 214, y: 690, r: 2 },
-        { x: 216, y: 692, r: 2 }    // Pinky toe
-    ];
-
-    leftToePositions.forEach(toe => {
-        const leftToe = createSVGElement('circle', {
-            cx: toe.x,
-            cy: toe.y,
-            r: toe.r,
-            fill: 'url(#legGradient)',
-            stroke: '#000000',
-            'stroke-width': '1.5'
-        });
-        svg.appendChild(leftToe);
-    });
-
-    // RIGHT LEG
-    // Upper leg/thigh (mirror of left)
-    const rightUpperLeg = createSVGElement('rect', {
-        x: '204',       // Right of center
-        y: '500',       // Same height as left
-        width: '28',    // Same thickness
-        height: '90',
+    // RIGHT LEG - Simple continuous leg shape
+    const rightLegPath = createSVGElement('path', {
+        d: 'M 205 500 L 205 670 L 225 670 L 225 500 Z',
+        // Creates simple straight leg
         fill: 'url(#legGradient)',
         stroke: '#000000',
         'stroke-width': '3',
-        rx: '14',
         filter: 'url(#dropShadow)'
     });
-    svg.appendChild(rightUpperLeg);
+    svg.appendChild(rightLegPath);
 
-    // Lower right leg/calf
-    const rightLowerLeg = createSVGElement('rect', {
-        x: '206',       // Slightly narrower
-        y: '590',
-        width: '24',    // Same as left
-        height: '85',
-        fill: 'url(#legGradient)',
-        stroke: '#000000',
-        'stroke-width': '3',
-        rx: '12',
-        filter: 'url(#dropShadow)'
-    });
-    svg.appendChild(rightLowerLeg);
-
-    // Right foot
+    // Right foot - simple rounded foot shape
     const rightFoot = createSVGElement('ellipse', {
-        cx: '218',      // Center of right ankle
-        cy: '688',
-        rx: '30',       // Same size as left
-        ry: '15',
+        cx: '215',      // Center of foot
+        cy: '682',      // Below leg
+        rx: '25',       // Foot length
+        ry: '12',       // Foot height
         fill: 'url(#legGradient)',
         stroke: '#000000',
         'stroke-width': '3',
         filter: 'url(#dropShadow)'
     });
     svg.appendChild(rightFoot);
-
-    // RIGHT TOE AREA - Add 5 small toes (mirrored)
-    const rightToePositions = [
-        { x: 184, y: 692, r: 2 },    // Pinky toe
-        { x: 186, y: 690, r: 2 },
-        { x: 188, y: 688, r: 2.5 },
-        { x: 191, y: 686, r: 2.5 },
-        { x: 195, y: 684, r: 3.5 }     // Big toe
-    ];
-
-    rightToePositions.forEach(toe => {
-        const rightToe = createSVGElement('circle', {
-            cx: toe.x,
-            cy: toe.y,
-            r: toe.r,
-            fill: 'url(#legGradient)',
-            stroke: '#000000',
-            'stroke-width': '1.5'
-        });
-        svg.appendChild(rightToe);
-    });
 }
 
 /**
@@ -1076,29 +916,21 @@ function renderOutfit(svg, state) {
         });
         svg.appendChild(top);
 
-        // LEFT SLEEVE - covers left arm
-        const leftSleeve = createSVGElement('rect', {
-            x: '108',       // Covers left arm
-            y: '360',       // Shoulder level
-            width: '22',    // Sleeve thickness
-            height: '70',   // Sleeve length (short sleeve)
+        // LEFT SLEEVE - short sleeve
+        const leftSleeve = createSVGElement('path', {
+            d: 'M 130 380 Q 120 420 118 450 L 128 455 Q 128 420 138 380 Z',
             fill: topColor,
             stroke: '#000000',
-            'stroke-width': '2',
-            rx: '11'
+            'stroke-width': '2'
         });
         svg.appendChild(leftSleeve);
 
-        // RIGHT SLEEVE - covers right arm
-        const rightSleeve = createSVGElement('rect', {
-            x: '270',       // Covers right arm
-            y: '360',       // Shoulder level
-            width: '22',    // Sleeve thickness
-            height: '70',   // Sleeve length
+        // RIGHT SLEEVE - short sleeve
+        const rightSleeve = createSVGElement('path', {
+            d: 'M 270 380 Q 280 420 282 450 L 272 455 Q 272 420 262 380 Z',
             fill: topColor,
             stroke: '#000000',
-            'stroke-width': '2',
-            rx: '11'
+            'stroke-width': '2'
         });
         svg.appendChild(rightSleeve);
 
@@ -1122,54 +954,47 @@ function renderOutfit(svg, state) {
 
         // Check if it's pants or a skirt
         if (outfitData.bottom.id.includes('jeans') || outfitData.bottom.id.includes('shorts')) {
-            // PANTS - Two separate legs
+            // PANTS - Two separate legs covering the leg shapes
             // Left pant leg
-            const leftPantLeg = createSVGElement('rect', {
-                x: '168',       // Covers left leg
-                y: '500',       // Waist level
-                width: '28',    // Leg width
-                height: '90',   // Pant length
+            const leftPantLeg = createSVGElement('path', {
+                d: 'M 175 500 L 175 670 L 195 670 L 195 500 Z',
                 fill: bottomColor,
                 stroke: '#000000',
-                'stroke-width': '2',
-                rx: '14'
+                'stroke-width': '3'
             });
             svg.appendChild(leftPantLeg);
 
             // Right pant leg
-            const rightPantLeg = createSVGElement('rect', {
-                x: '204',       // Covers right leg
-                y: '500',       // Waist level
-                width: '28',    // Leg width
-                height: '90',
+            const rightPantLeg = createSVGElement('path', {
+                d: 'M 205 500 L 205 670 L 225 670 L 225 500 Z',
                 fill: bottomColor,
                 stroke: '#000000',
-                'stroke-width': '2',
-                rx: '14'
+                'stroke-width': '3'
             });
             svg.appendChild(rightPantLeg);
         } else {
             // SKIRT - One piece covering both legs
             const skirt = createSVGElement('path', {
-                d: 'M 165 500 L 155 590 L 245 590 L 235 500 Z',
+                d: 'M 170 500 L 160 620 L 240 620 L 230 500 Z',
                 fill: bottomColor,
                 stroke: '#000000',
-                'stroke-width': '3'
+                'stroke-width': '3',
+                filter: 'url(#dropShadow)'
             });
             svg.appendChild(skirt);
         }
     }
 
-    // RENDER SHOES - always shown on feet
+    // RENDER SHOES - always shown, covering feet completely
     if (outfitData.shoes) {
         const shoeColor = outfitData.shoes.color;
 
-        // Left shoe
+        // Left shoe - covers entire foot
         const leftShoe = createSVGElement('ellipse', {
-            cx: '182',      // Left foot position
-            cy: '688',      // Foot level (updated)
-            rx: '32',       // Slightly bigger than foot
-            ry: '17',       // Shoe height
+            cx: '185',      // Left foot position
+            cy: '682',      // Foot level
+            rx: '28',       // Shoe length
+            ry: '14',       // Shoe height
             fill: shoeColor,
             stroke: '#000000',
             'stroke-width': '3',
@@ -1179,22 +1004,22 @@ function renderOutfit(svg, state) {
 
         // Left shoe detail (laces/stripe)
         const leftShoeDetail = createSVGElement('ellipse', {
-            cx: '182',
-            cy: '688',
-            rx: '20',       // Inner detail
-            ry: '10',
+            cx: '185',
+            cy: '682',
+            rx: '18',       // Inner detail
+            ry: '8',
             fill: lightenColor(shoeColor, 20),
             stroke: '#000000',
             'stroke-width': '1'
         });
         svg.appendChild(leftShoeDetail);
 
-        // Right shoe
+        // Right shoe - covers entire foot
         const rightShoe = createSVGElement('ellipse', {
-            cx: '218',      // Right foot position
-            cy: '688',      // Foot level (updated)
-            rx: '32',
-            ry: '17',
+            cx: '215',      // Right foot position
+            cy: '682',      // Foot level
+            rx: '28',       // Shoe length
+            ry: '14',       // Shoe height
             fill: shoeColor,
             stroke: '#000000',
             'stroke-width': '3',
@@ -1204,10 +1029,10 @@ function renderOutfit(svg, state) {
 
         // Right shoe detail (laces/stripe)
         const rightShoeDetail = createSVGElement('ellipse', {
-            cx: '218',
-            cy: '688',
-            rx: '20',
-            ry: '10',
+            cx: '215',
+            cy: '682',
+            rx: '18',       // Inner detail
+            ry: '8',
             fill: lightenColor(shoeColor, 20),
             stroke: '#000000',
             'stroke-width': '1'
@@ -1217,80 +1042,62 @@ function renderOutfit(svg, state) {
 }
 
 /**
- * Renders the character's nails on fingertips.
+ * Renders the character's nails as colored highlights on hands.
  * MONSTER HIGH STYLE: Glossy nails with shine and bold outlines
  *
- * Shows nails on all 10 fingers (5 per hand)
+ * Shows nail polish as decorative elements on hands
  */
 function renderNails(svg, state) {
     // MONSTER HIGH: Boost nail color saturation
     const nailColor = boostSaturation(state.nails.color, 40);
 
-    // Left hand nail positions - positioned at fingertips
-    const leftFingerNailPositions = [
-        { x: 106, y: 539 },  // Pinky fingertip
-        { x: 111, y: 543 },  // Ring fingertip
-        { x: 116, y: 547 },  // Middle fingertip (longest)
-        { x: 121, y: 543 },  // Index fingertip
-        { x: 129, y: 531 }   // Thumb fingertip
-    ];
-
-    // Right hand nail positions - mirrored
-    const rightFingerNailPositions = [
-        { x: 271, y: 531 },  // Thumb fingertip
-        { x: 279, y: 543 },  // Index fingertip
-        { x: 284, y: 547 },  // Middle fingertip (longest)
-        { x: 289, y: 543 },  // Ring fingertip
-        { x: 294, y: 539 }   // Pinky fingertip
-    ];
-
-    // Render all left hand nails
-    leftFingerNailPositions.forEach(pos => {
-        const nail = createSVGElement('ellipse', {
-            cx: pos.x,
-            cy: pos.y,
-            rx: '3',        // Small nail
-            ry: '4',        // Slightly taller
-            fill: nailColor,
-            stroke: '#000000',
-            'stroke-width': '1.5'
-        });
-        svg.appendChild(nail);
-
-        // MONSTER HIGH: Add glossy shine on each nail
-        const nailShine = createSVGElement('circle', {
-            cx: pos.x,
-            cy: pos.y - 1,  // Top of nail
-            r: '1',
-            fill: 'white',
-            opacity: '0.8'  // Glossy effect
-        });
-        svg.appendChild(nailShine);
+    // Left hand nail accents - bottom of hand
+    const leftNails = createSVGElement('ellipse', {
+        cx: '120',
+        cy: '525',      // Bottom of hand
+        rx: '12',       // Width of nail area
+        ry: '6',        // Height of nail area
+        fill: nailColor,
+        stroke: '#000000',
+        'stroke-width': '2',
+        opacity: '0.9'
     });
+    svg.appendChild(leftNails);
 
-    // Render all right hand nails
-    rightFingerNailPositions.forEach(pos => {
-        const nail = createSVGElement('ellipse', {
-            cx: pos.x,
-            cy: pos.y,
-            rx: '3',
-            ry: '4',
-            fill: nailColor,
-            stroke: '#000000',
-            'stroke-width': '1.5'
-        });
-        svg.appendChild(nail);
-
-        // MONSTER HIGH: Add glossy shine on each nail
-        const nailShine = createSVGElement('circle', {
-            cx: pos.x,
-            cy: pos.y - 1,
-            r: '1',
-            fill: 'white',
-            opacity: '0.8'
-        });
-        svg.appendChild(nailShine);
+    // Left nail shine
+    const leftNailShine = createSVGElement('ellipse', {
+        cx: '120',
+        cy: '523',
+        rx: '8',
+        ry: '3',
+        fill: 'white',
+        opacity: '0.6'
     });
+    svg.appendChild(leftNailShine);
+
+    // Right hand nail accents - bottom of hand
+    const rightNails = createSVGElement('ellipse', {
+        cx: '280',
+        cy: '525',      // Bottom of hand
+        rx: '12',       // Width of nail area
+        ry: '6',        // Height of nail area
+        fill: nailColor,
+        stroke: '#000000',
+        'stroke-width': '2',
+        opacity: '0.9'
+    });
+    svg.appendChild(rightNails);
+
+    // Right nail shine
+    const rightNailShine = createSVGElement('ellipse', {
+        cx: '280',
+        cy: '523',
+        rx: '8',
+        ry: '3',
+        fill: 'white',
+        opacity: '0.6'
+    });
+    svg.appendChild(rightNailShine);
 }
 
 /**
