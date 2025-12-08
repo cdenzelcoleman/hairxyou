@@ -329,6 +329,30 @@ header h1 {
     .main-content {
         padding: 15px;
     }
+
+    .activity-buttons {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .activity-btn {
+        flex: 1;
+        min-width: 140px;
+    }
+
+    #character {
+        width: 100%;
+        height: auto;
+    }
+
+    .color-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .styles-grid,
+    .outfit-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
 /* ====================================
