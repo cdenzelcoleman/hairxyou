@@ -456,3 +456,76 @@ header h1 {
         opacity: 0; /* Fade to invisible */
     }
 }
+
+/* ====================================
+   HAIR STYLING ACTIVITY STYLES
+   ==================================== */
+
+/* Styles grid layout - displays hairstyle options in a 2-column grid */
+/* Each style is a clickable card with icon and name */
+.styles-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 equal columns */
+    gap: 12px; /* Space between style cards */
+    margin-bottom: 20px;
+}
+
+/* Style card - clickable button for each hairstyle option */
+/* Used for both instant styles (afro, locs) and interactive styles (braids, twists) */
+.style-card {
+    display: flex;
+    flex-direction: column; /* Stack icon on top, name below */
+    align-items: center; /* Center horizontally */
+    gap: 8px; /* Space between icon and name */
+    padding: 15px;
+    background: white;
+    border: 2px solid #ddd; /* Light gray border */
+    border-radius: 12px; /* Rounded corners */
+    cursor: pointer;
+    transition: all 0.3s ease; /* Smooth animation for hover */
+    font-family: inherit;
+}
+
+/* Style card hover effect - lifts up with shadow */
+/* Visual feedback shows card is interactive */
+.style-card:hover {
+    background: #f8f9fa; /* Very light gray background */
+    border-color: #C06C84; /* Purple border on hover matches theme */
+    transform: translateY(-3px); /* Lift up slightly */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2); /* Shadow adds depth */
+}
+
+/* Style icon (emoji) styling */
+.style-icon {
+    font-size: 2em; /* Large icon is eye-catching */
+}
+
+/* Style name text */
+.style-name {
+    font-weight: bold;
+    color: #424242; /* Dark gray for readability */
+    font-size: 0.9em;
+    text-align: center; /* Center text for multi-word names */
+}
+
+/* Section count display - shows progress like "3 / 12" */
+/* Used during interactive styling to show how many sections are complete */
+.section-count {
+    text-align: center;
+    font-weight: bold;
+    color: #6C5B7B; /* Purple matches theme */
+    margin-top: 10px;
+}
+
+/* Hair section SVG styling - for interactive braiding/twisting */
+/* These are the clickable rectangles that represent individual braids/twists */
+.hair-section {
+    transition: all 0.3s ease; /* Smooth transition when styling a section */
+}
+
+/* Hair section hover effect - subtle feedback before clicking */
+/* Shows which section you're about to click */
+.hair-section:hover {
+    opacity: 0.9 !important; /* Slight opacity change on hover */
+    /* !important overrides inline opacity set by JavaScript */
+}
